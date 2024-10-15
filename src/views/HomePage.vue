@@ -13,7 +13,7 @@
 .container{
   position: absolute;
   top: 0;
-  bottom: 69Px;
+  bottom: 59Px;
   left: 0;
   right: 0;
   overflow-y: auto;

@@ -11,7 +11,7 @@ import loadingDirective from './components/loading/directive'
 const app = createApp(App)
 
 app.use(router).use(createPinia()).use(lazyPlugin,{
-    loading: 'https://static.infinitytab.com/infinity-official/img/IMG-LOGO@2x.png'
+    loading: 'https://cdn.oaistatic.com/assets/apple-touch-icon-mz9nytnj.webp'
   }
 )
 app.use(VueQueryPlugin).directive('loading', loadingDirective)

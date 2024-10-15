@@ -25,6 +25,8 @@ const loading = computed(() => {
 
 <template>
 <div class="container" v-loading="loading">
+  <Scroll class="scroll">
+    <div>
   <div class="top">
     <span class="iconfont icon">&#xe654;</span>
     <span class="text">官方榜</span>
@@ -35,10 +37,12 @@ const loading = computed(() => {
     <div class="content">
       <div class="content-img" :style="{ 'background-image': `url(${item.coverImgUrl})` }"></div>
       <div class="content-music">
-        <div class="content-music-1" v-for="(value, ind) in showThree[index].tracks">{{ind}} {{value.first}} <span> - {{ value.second }}</span></div>
+        <div class="content-music-1" v-for="(value, ind) in showThree[index].tracks">{{ind+1}} {{value.first}} <span> - {{ value.second }}</span></div>
       </div>
     </div>
   </div>
+  </div>
+</Scroll>
 </div>
 </template>
 
@@ -49,10 +53,15 @@ const loading = computed(() => {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: aquamarine;
+  background-color: rgb(241 245 249);
   overflow-x: auto;
   padding: 0 25Px;
   color:black;
+  .scroll {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
   .top{
     display: flex;
     align-items: center;
@@ -60,43 +69,46 @@ const loading = computed(() => {
     .icon{
       display: inline-block;
       color:$color-theme;
-      font-size: 27Px;
+      font-size: 13px;
     }
     .text{
-      font-size: 23Px;
+      font-size: 9px;
       padding-left: 9Px;
     }
   }
   .block{
-    height: 125Px;
-    background-color: antiquewhite;
+    background-color: #fff;
     border-radius: 15Px;
     margin-bottom: 25Px;
-    padding: 15PX 25Px;
+    padding: 9Px 25Px 15Px 25Px;
     position: relative;
     .type{
-      margin-bottom: 15PX;
+      margin-bottom: 9Px;
+      font-weight: 400;
+      font-size: 9px;
     }
     .time{
-      font-size:13Px;
+      font-size:6px;
       position: absolute;
-      top:19Px;
+      top:13Px;
       right:29Px;
+      color:rgba(0,0,0,.5)
     }
     .content{
       display: flex;
+      align-items: center;
       &-img{     
-        height: 80Px;
-        min-width: 80Px;
+        height: 36px;
+        min-width: 36px;
         background-size: cover;
         border-radius: 9Px;
-        margin-right: 35Px;
+        margin-right: 15Px;
       }
       &-music{
         display: flex;
         flex-direction: column;
-        background-color: aqua;
-        font-size: 17Px;
+        justify-content: center;
+        font-size: 6.7px;
         min-width: 0;
         &-1{
           padding:5Px 5Px;

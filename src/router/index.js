@@ -12,6 +12,9 @@ import Search from '@/views/Search.vue'
 import SingerDetail from '@/views/SingerDetail.vue'
 import Dynamic from '@/views/Dynamic.vue'
 import Suggestion from '@/components/SearchPages/suggestion.vue'
+import MyHis from '@/views/MyHis.vue'
+import MyLove from '@/views/MyLove.vue'
+import MusicsList from '@/views/MusicsList.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -94,6 +97,18 @@ const router = createRouter({
     {
       path: '/test',
       component: Suggestion
+    },
+    {
+      path: '/hislisten',
+      component: MyHis,
+    },
+    {
+      path: '/mylove',
+      component:MyLove
+    },
+    {
+      path: '/musiclists',
+      component: MusicsList,
     }
   ],
 })

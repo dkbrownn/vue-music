@@ -1,10 +1,29 @@
-export default function useFixed () {
+export default function useFixed (listObj) {
   const groupRef = ref(null)
   const listHeights = ref([])
-  /* watch(() => props.data, async () => {
+  const scrollY = ref(0)
+  const currentIndex = ref(0)
+  const distance = ref(0)
+  const show = ref(1)
+  const fixedTitle = computed(() => {
+    const List = Object.keys(listObj.value)
+    const currentGroup = List[currentIndex.value]
+    return currentGroup ?  currentGroup : ''
+  })
+  watch(listObj, async () => {
     await nextTick()
     calculate()
-  }) */
+  })
+  watch(scrollY, (newY) => {
+    newY <= 0 ? show.value = 0 : show.value = 1
+    const listHeightsVal =  listHeights.value
+    for (let i = 0; i<listHeightsVal.length - 1; i++) {
+      const heightTop = listHeightsVal[i]
+      const heightBottom = listHeightsVal[i+1]
+      if (newY >= heightTop && newY <= heightBottom)
+        currentIndex.value = i
+    }
+  })
   function calculate () {
     const list = groupRef.value.children
     let height = 0
@@ -17,5 +36,8 @@ export default function useFixed () {
       listHeightsVal.push(height)
     }
   }
-  return { groupRef }
+  function onScroll (pos) {
+    scrollY.value = -pos.y
+  }
+  return { groupRef, onScroll, fixedTitle, currentIndex, show }
 }

@@ -1,21 +1,21 @@
 <script setup>
-
+const list = inject('searchResult-SongList')
 </script>
 
 <template>
-<div class="container" >
-  <div class="lists">
-    <img >
-    <div class="right">
+<div class="container">
+  <div class="lists" v-for="i in list">
+    <img :src="i.coverImgUrl">
       <div class="name">
-        <div class="name-1">落雁</div>
-        <div class="name-2">加入TA的粉丝团</div>
-      </div>
-      <div class="follow">
-        + 关注
+        <div class="name-1">{{i.name}}</div>
+        <div class="name-2">
+          <span>{{ i.trackCount }}首</span>
+          ,by<span>{{ i.creator.nickname }}</span>
+          <span>,播放{{ i.playCount }}次</span>
+        </div>
+        <div class="name-3">{{i.recommendText}}</div>
       </div>
     </div>
-   </div>
 </div>
 </template>
 
@@ -28,6 +28,8 @@
   right: 0;
   overflow-x: auto;
   padding: 0 15Px;
+  background-color:#fff;
+  color:#000;
 }
 .lists{
     display: flex;
@@ -36,34 +38,25 @@
     img{
       height: 65Px;
       width: 65Px;
-      border-radius: 50%;
-      background-color: antiquewhite;
-    }
-    .right{
-      flex:1;
-      display: flex;
-      align-items: center;
+      border-radius: 9%;
+      object-fit: cover;
     }
     .name{
       flex:1;
       margin-left: 25Px;
       line-height: 25Px;
-      color:white;
-      font-size: 17Px;
+      font-size: 14Px;
       &-1{
         padding: 5Px 0;
+        font-size: 16Px;
       }
       &-2{
-        font-size: 15Px;
+        color:rgba(0,0,0,.6);
+      }
+      &-3{
+        font-size: 13Px;
         color: rgb(2, 132 ,199)
       }
-    }
-    .follow{
-      font-size: 13Px;
-      padding: 5PX 9Px;
-      border-radius: 15Px;
-      border: 2Px solid $color-theme;
-      color: $color-theme;
     }
   }
 </style>

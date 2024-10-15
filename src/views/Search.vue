@@ -1,5 +1,7 @@
 <script setup lang='ts'>
-import { getTopList, getRecommandContent1, getSuggestion } from '@/api/test'
+import { debounce } from 'throttle-debounce'
+import { getTopList, getRecommandContent1, getSuggestion, searchResult } from '@/api/test'
+import { getLocal, saveLocal } from '@/utils/use-storage';
 const suggestion = ref([])
 const list = ref([])
 const info = ref([])
@@ -16,22 +18,82 @@ const getListDetail = async () => {
 onMounted(() => {
   getListDetail()
 })
+//输入框输入
 const inputVal = ref('')
-const pushVal = async () => {
+// const deb = debounce(300, () => {
+//   console.log('deb')
+// })
+// deb()
+// deb()
+// deb()
+const haveResult = ref(true)
+const debounceFunc = debounce(1000, async (value) => {
+  if (value) {
+    const res3 = await getSuggestion(value)
+    suggestion.value = res3.data.result?.allMatch
+    if (suggestion.value === undefined) {
+      haveResult.value = false
+    }
+    console.log(suggestion.value, res3.data.result?.allMatch, haveResult.value)
+  } else {
+    console.log('111')
+  }
+})
+const pushVal = (e) => {
   if (inputVal.value) {
     console.log(inputVal.value)
-    const res3 = await getSuggestion(inputVal.value)
-    suggestion.value = res3.data.result.allMatch
-    console.log(suggestion.value)
+    suggestion.value = []
+    debounceFunc(inputVal.value)
+  } else {
+    debounceFunc('')
+    result.value = false
+  }
+  if (e.inputType === 'deleteContentBackward') {
+    result.value = false
   }
 }
 const result = ref(false)
 const show = computed(() => {
-  return (inputVal.value == '' || suggestion.value.length == 0) && result.value === false
+   return inputVal.value === ''
+  // return inputVal.value == '' || suggestion.value?.length == 0 && result.value === false
 })
-const getResult = () =>{
-  result.value = true
+const showSuggestion = computed(() => {
+  if (!result.value && !show.value) {
+    suggestion.value = []
+  }
+  return !result.value && !show.value
+})
+// 猜你喜欢和搜索历史
+const his = ref(getLocal('his') || [])
+const love = ref(['罗生门','汪苏泷','陈奕迅'])
+console.log(getLocal('his'))
+
+//  搜索确定功能
+const getResult = (value) =>{
+  if (value) {
+    result.value = true
+    his.value.push(inputVal.value)
+    saveLocal('his', his.value)
+  }
 }
+
+// 点击历史或猜你喜欢搜索
+const handleClickSearch = (str) => {
+  console.log('handleEmit')
+  inputVal.value = str
+  getResult(str)
+}
+// 点击删除搜索历史与喜欢
+const handleDelete = (type) => {
+  if (type === 0) {
+    his.value = []
+    saveLocal('his', his.value)
+  }
+  if (type === 1) {
+    love.value = []
+  }
+}
+//返回功能
 const router = useRouter()
 const handleBack = () => {
   if (!inputVal.value) {
@@ -41,58 +103,102 @@ const handleBack = () => {
     result.value = false
   }
 }
+
+
+
+//分页数据
+const offset = ref(1) //分页 offset*limit
+const resultSongs = ref([])
+const resultSongList = ref([])
+const resultSinger = ref([])
+
+async function test (type) { 
+  const res = await searchResult({ keywords: inputVal.value, type :type, offset: offset.value })
+  console.log(res.data.result.hasMore)
+  if (type === 1)
+    resultSongs.value = res.data.result;
+  if (type === 100)
+    resultSinger.value =  res.data.result.artists
+  if (type === 1000)
+    resultSongList.value = res.data.result.playlists
+}
+provide('searchResult-song', resultSongs)
+provide('searchResult-SongList', resultSongList)
+provide('searchResult-singer', resultSinger)
+provide('inputVal', inputVal)
+
+
 </script>
 
 <template>
+<div class="wrapper">
+  
   <div class="header">
     <div class="iconfont more" @click="handleBack">&#xe612;</div>
     <div class="iconfont search">
       <i class="iconfont search_icon">&#xe752;</i>
-      <input placeholder="搜索歌曲、歌手" v-model="inputVal" @input="pushVal" @change="getResult"/>
+      <input placeholder="搜索歌曲、歌手" v-model="inputVal" @input="pushVal"/>
     </div>
-    <div class="iconfont voice" @click="getResult">搜索</div>
+    <div class="iconfont voice" @click="getResult(inputVal)">搜索</div>
   </div>
   <div class="container">
-    <div v-show="show">
-      <div class="search-his">
-        <div>搜索历史</div>
-        <div class="search-his-content" v-for="i in 9">罗生门</div>
-        <div class="search-his-content">苹果香</div>
-        <div class="search-his-content">歌手列表</div>
+    
+      <Scroll class="scroll" v-show="show && !result">
+        <div>
+          <div class="search-his">
+            <div>搜索历史</div>
+            <span class="iconfont" @click="handleDelete(0)" v-show="his.length">&#xe634;</span>
+            <div class="search-his-content" v-for="i in his" @click="handleClickSearch(i)">{{ i }}</div>
+          </div>
+          <div class="search-love">
+            <div>猜你喜欢</div>
+            <span class="iconfont" @click="handleDelete(1)" v-show="love.length">&#xe634;</span>
+            <div class="search-love-content" v-for="i in love" @click="handleClickSearch(i)">{{ i }}</div>
+          </div>
+          <div class="bangdan">
+            <div class="title">飙升榜</div>
+            <div class="content" v-for="(i, index) in info">
+              <span class="span" :class="{'hot': index < 3}">{{ index + 1 }}</span><div :class="{'hot-t': index < 3}">{{i.name}}</div></div>
+          </div>
+          </div>
+       </Scroll>
+    
+      <Suggestion v-show="showSuggestion" :suggestion="suggestion"  :haveResult="haveResult" @emit-search="handleClickSearch"/>
+      <div v-if="result && !show">
+        <SearchResult @get-data="test"/>
       </div>
-      <div class="search-love">
-        <div>猜你喜欢</div>
-        <div class="search-love-content">罗生门</div>
-        <div class="search-love-content">苹果香</div>
-        <div class="search-love-content">歌手列表</div>
-      </div>
-      <div class="bangdan">
-        <div class="title">飙升榜</div>
-        <div class="content" v-for="i in info">{{i.name}}</div>
-      </div>
-    </div>
-    <Suggestion v-show="!show && !result" :suggestion="suggestion"/>
-    <div v-show="result">
-      <SearchResult />
-    </div>
   </div>
+
+  
+</div>
 </template>
 
 <style scoped lang="scss">
+.wrapper{
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(236, 243, 250);
+  color:#000;
+  
+}
 .header {
-  padding: 0 3Px ;
+  padding: 0 9Px ;
   margin: 5Px 0;
   display: flex;
   align-items: center;
+  justify-content:space-around;
   height: 39Px;
   .more{
-    font-size: 27Px;
+    font-size: 21Px;
   }
   .search {
-    flex: 1;
-    margin: 0 10Px;
+    flex:1;
     height: 30Px;
-    background-color: $color-highlight-background;
+    margin: 9Px;
+    background-color: #fff;
     padding: 3Px 19Px;
     border-radius: 29Px;
     display: flex;
@@ -100,18 +206,20 @@ const handleBack = () => {
     &_icon {
       left: 13Px;
       font-size:19Px;
-      color:$color-text-ll;
+      color:#000;
     }
     input{
+      width: 100%;
       margin-left: 6Px;
       background-color: transparent;
       border: none;
       outline: none;
+      font-size: 17Px;
     }
   }
   .voice{
     line-height: 29Px;
-    font-size:17Px;
+    font-size:15Px;
   }
 }
 .container{
@@ -119,34 +227,66 @@ const handleBack = () => {
   top:50Px;
   left: 0;
   right: 0;
-  bottom: 15Px;
+  bottom: 0;
   padding:15Px 5Px 0 5Px;
-  overflow-y:auto;
+  .scroll {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
   .search-his, .search-love{
     font-size: 15Px;
     margin: 9Px;
+    position: relative;
+    min-height: 25Px;
     &-content{
       display: inline-block;
       margin:6Px 5Px 0 6Px;
-      padding: 5Px 9Px;
-      background-color: $color-highlight-background;
+      padding: 6Px 9Px;
+      background-color: #fff;
       border-radius: 17Px;
+      font-size: 13Px;
+    }
+    .iconfont {
+      position: absolute;
+      right: 5Px;
+      top:0;
+      font-size: 17Px;
+      color:rgba(0, 0, 0, 0.5)
     }
   }
   .bangdan{
-    margin:25Px 9Px 0 9Px;
+    margin:25Px 9Px 15Px 9Px;
     font-size: 25Px;
-    background-color: $color-dialog-background;
+    background-color: #fff;
     padding: 9Px;
-    width:250Px;
-    border-radius: 5Px;
+    border-radius: 15Px;
     .title{
       border-bottom: 1Px solid $color-text-d;
-      padding:5PX 0;
+      padding:5Px 0;
+      border-bottom: 1Px solid rgba(0, 0, 0, 0.1);
     }
     .content{
-      font-size: 19Px;
-      padding:5Px 0;
+      font-size: 17Px;
+      padding:6Px 0;
+      display: flex;
+      align-items: center;
+      color:rgba(0,0,0,.8);
+      .span {
+        padding-right: 19Px;
+        font-size: 19Px;
+        height: 100%;
+        color:#000;
+      }
+      .hot {
+        color:rgba(239, 69, 69, 0.9);
+        font-weight: 500;
+      }
+      .hot-t {
+        font-weight: 600;
+        font-size: 16Px;
+        color:#000;
+      }
     }
   }
 }

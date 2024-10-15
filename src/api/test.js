@@ -131,3 +131,48 @@ export const getSuggestion  = (keywords, type = 'mobile') => {
     }
   })
 }
+//获取歌曲url
+export const getSongUrl  = (id) => {
+  return instance({
+    url: '/song/url/v1',
+    params: {
+      id,
+      realIP:'116.25.146.177',
+      level: "lossless"
+    }
+  })
+}
+// 获取逐词歌词
+export const getSongLyric  = (id) => {
+  return instance({
+    url: '/lyric/new',
+    params: {
+      id,
+      realIP:'116.25.146.177',
+    }
+  })
+}
+// 搜索
+export const searchResult  = ({ keywords, type, offset }) => {
+  return instance({
+    url: '/search',
+    params: {
+      keywords,
+      type,
+      offset
+    }
+  })
+}
+// 电台分类
+export const getDjTYpe  = () => {
+  return instance({
+    url: '/dj/category/recommend'
+  })
+}
+//电台付费
+
+export const getDjPay  = () => {
+  return instance({
+    url: '/dj/program/toplist/hours'
+  })
+}

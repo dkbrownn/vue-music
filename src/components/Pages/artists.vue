@@ -1,45 +1,57 @@
 <script setup>
 import { sortSinger } from '@/utils/getSingerList'
 import useFixed from '@/assets/js/fixedBar';
+import useShortcut from '@/assets/js/sidebar';
 const singerList = ref([])
 const getlist = async () => {
   const { list } = await sortSinger()
   singerList.value = list
+  console.log(singerList)
 } 
-/* const { groupRef } = useFixed() */
-const height = ref(null)
-const getChildren = () => {
-  console.log('1')
-  const heightAll = ref([])
-   heightAll.value = height.value.children
-   console.log(height.value.children.length)
-  /* for(let i = 0; i<heightAll.value.length; i++) {
-    console.log(heightAll[i])
-    console.log('111')
-  } */
-}
+// /* const { groupRef } = useFixed() */
+// const height = ref(null)
+// const getChildren = () => {
+//   console.log('1')
+//   const heightAll = ref([])
+//    heightAll.value = height.value.children
+//    console.log(height.value.children.length)
+//   /* for(let i = 0; i<heightAll.value.length; i++) {
+//     console.log(heightAll[i])
+//     console.log('111')
+//   } */
+// }
 onMounted(() => {
   getlist()
-  console.log(height.value.children)
-  getChildren()
 }) 
 const loading = computed(() => {
   return singerList.value.length == 0
 })
 const loadingText = '加载中...'
+  
+  
+
+const { groupRef, onScroll, fixedTitle, currentIndex, show } = useFixed(singerList) 
+
+const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(singerList, groupRef)
 </script>
 
 <template>
   <div class="container" v-loading:[loadingText]="loading" ref="height">
-    <div class="A-area" v-for="(item, key) in singerList">
-      <div class="key">{{key}}</div>
-      <div class="lists" v-for="i in item" @click="$router.push(`/singerdetail/${i.id}`)">
-        <img :src="i.img1v1Url">
-        <div class="name">{{i.name}}</div>
+    <div class="fix-key" :style="{opacity: show}">{{ fixedTitle }}</div>
+    <Scroll class="scroll" :probe-type="3" @scroll="onScroll" ref="scrollRef">
+      <div ref="groupRef">
+        <div class="A-area" v-for="(item, key, index) in singerList">
+          <div class="key">{{key}}</div>
+          <div class="lists" v-for="i in item" @click="$router.push(`/singerdetail/${i.id}`)">
+            <img v-lazy="i.img1v1Url" >
+            <div class="name">{{i.name}}</div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="sidebar">
-      <li v-for="(item, key) in singerList" :class="{'active': key === 'A'}">{{key}}</li>
+    </Scroll>
+    <div class="sidebar" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
+      <li v-for="(item, key, index) in singerList" :data-set="index" :class="{'active': index === currentIndex}"
+      >{{key}}</li>
     </div>
   </div>
 </template>
@@ -51,37 +63,55 @@ const loadingText = '加载中...'
   bottom: 0;
   left: 0;
   right: 0;
-  overflow-x: auto;
   padding: 0 25Px;
+  .fix-key {
+    position: fixed;
+    top:50Px;
+    left: 25Px;
+    right: 25Px;
+    height: 30Px;
+    background-color: rgb(203 213 225);
+    padding:2px 13Px;
+    color:rgba(0, 0, 0, 1);
+    border-bottom-left-radius: 13Px;
+    border-bottom-right-radius: 13Px;
+    font-size: 21Px;
+    z-index:500;
+  }
+  .scroll {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 }
 .active{
   color:$color-sub-theme;
 }
 .A-area{
-  margin-top:5Px;
   .key{
-    background-color: rgba(27, 24, 29, 0.5);
-    padding:3px 15Px;
-    color:rgba(211, 209, 209, 0.5);
+    background-color: rgb(203 213 225);
+    padding:2px 13Px;
+    color:rgba(0, 0, 0, 1);
     border-bottom-left-radius: 13Px;
     border-bottom-right-radius: 13Px;
+    font-size: 21Px;
   }
   .lists{
     display: flex;
     align-items: center;
-    padding: 5Px 3Px;
+    padding: 6Px 3Px;
     img{
-      height: 55Px;
-      width: 55Px;
+      height: 25px;
+      width: 25px;
       border-radius: 50%;
     }
     .name{
       flex:1;
       margin-left: 15Px;
       line-height: 55Px;
-      color:rgb(153, 155, 157);
-      border-bottom: 2Px solid rgb(73, 71, 71, .3);
-      font-size: 17Px;
+      color:rgb(0, 0, 0);
+      border-bottom: 1Px solid rgb(73, 71, 71, .3);
+      font-size: 7.7px;
     }
   }
 }
@@ -91,13 +121,16 @@ const loadingText = '加载中...'
   top: 50%;
   transform: translateY(-50%);
   width: 21Px;
-  background-color: rgba(153, 155, 157, .5);
-  color:rgba(255,255,255,.7);
+  background-color: rgb(203 213 225);
+  color:rgba(0,0,0,.5);
   border-radius: 6Px;
   text-align: center;
+  padding: 13Px 0;
   li{
-    font-size: 19Px;
-    padding: 3Px 0;
+    font-size: 7px;
+    font-weight: 500;
+    padding: 5Px 0;
   }
 }
+
 </style>

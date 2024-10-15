@@ -1,5 +1,10 @@
 <script setup lang='ts'>
 import { getSingerFins, getSingerInfo, getTopFifty, getSingerName } from '@/api/test.js'
+import { usePlayStateStore } from '@/store/playerState.js'
+import { storeToRefs } from 'pinia'
+
+const store = usePlayStateStore()
+const { state } = store
 const singerAllInfo = reactive({
   /* info: '',
   fins: '',
@@ -25,6 +30,27 @@ onMounted(() => {
 const loading = computed(() => {
   return Object.keys(singerAllInfo).length !== 4
 })
+/* const { state } = storeToRefs(usePlayStateStore())
+const { change } = usePlayStateStore()
+console.log(state, reactive({}),  usePlayStateStore()) */
+/* const store = usePlayStateStore()
+ const { state } = storeToRefs(store) */
+
+const showToast = ref(false)
+const info = ref({})
+const addToPlayList = (obj) => {
+  showToast.value = true
+  info.value = obj
+}
+// const showList = reactive({
+//   show: false,
+//   List :[]
+// })
+// const onClick = (list) => {
+//   console.log('onClick')
+//   showList.show = true
+//   showList.List = list
+// }
 </script>
 
 <template>
@@ -45,19 +71,24 @@ const loading = computed(() => {
       <div class="song-music">
         <div class="song-music-bar">
           <span class="play iconfont">&#xe609;</span>
-          <span class="text">播放全部</span>
+          <span class="text" @click="store.selectPlay(singerAllInfo.topFifty,0)">播放全部</span>
         </div>
-        <div class="song-music-content" v-for="(item, index) in singerAllInfo.topFifty">
+        <div class="song-music-content" v-for="(item, index) in singerAllInfo.topFifty" @click="store.selectPlay(singerAllInfo.topFifty,index)">
           <span class="iconfont index">{{index}}</span>
           <div class="text">
             <div class="song-name">{{item.name}}</div>
-            <div class="ar-info">{{ item.al.name }}</div>
+            <div class="ar-info">
+          <span class="fee" v-show="item.fee === 1">VIP</span>
+          {{item.ar[0].name}} {{item.al?.name}}</div>
+          <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
           </div>
-          <span class="iconfont mv">&#xe85a;</span>
-          <span class="iconfont more">&#xe747;</span>
+          <span class="iconfont mv">&#xe645;</span>
+          <span class="iconfont more"  @click.stop="addToPlayList(
+            {songName:item.name,arName:item.ar[0].name,img:item.al.picUrl,allInfo: item})">&#xe747;</span>
         </div>
       </div>
     </div>
+    <Toast :info="info" :show="showToast" @change="() => showToast = false"/>
   </div>
 </template>
 
@@ -68,6 +99,7 @@ const loading = computed(() => {
   left: 0;
   right:0;
   bottom: 0;
+  color:#000;
   .top-bar{
     display: flex;
     align-items: center;
@@ -86,15 +118,15 @@ const loading = computed(() => {
       margin-right: auto;
       font-size: 25Px;
       padding-left: 5Px;
-      color:$color-background;
+      color:#fff;
     }
     .dot{
       font-size:29Px;
-      color:$color-background;
+      color:#fff;
     }
   }
   .backgroud-img{
-    padding-top: 100%;
+    padding-top: 91%;
     background-size: cover;
     background-position: center; 
     background-repeat: no-repeat;
@@ -109,32 +141,31 @@ const loading = computed(() => {
     &-info{
       display: flex;
       flex-direction: column;
-      height:115Px;
       font-size: 23Px;
       align-items: center;
       justify-content:space-around;
-      background-color: rgba(25,25,25,.7);
+      background-color: #fff;
       margin:325Px 25Px 25Px 25Px;
-      padding:25Px 0;
+      padding:15Px 0;
       border-radius: 25Px;
-      box-shadow: 1Px 2Px  rgba(197, 195, 195, .1);
+      box-shadow: 3Px 9Px 9Px 3Px rgba(197, 195, 195, .3);
       &-cname{
-        font-size: 25Px;
-        padding-bottom: 5Px;
+        font-size: 23Px;
+        padding-bottom: 10Px;
       }
       &-yname, &-fins{
         padding-bottom: 5Px;
-        font-size: 17Px;
+        font-size: 15Px;
       }
       &-title{
-        font-size: 21Px;
+        font-size: 17Px;
       }
     }
     &-music{
       margin-top:29Px;
       border-top-left-radius: 16Px;
       border-top-right-radius: 16Px;
-      background-color: $color-background;
+      background-color: rgba(255,255,255);
       &-bar{
         height: 61Px;
         display: flex;
@@ -142,7 +173,7 @@ const loading = computed(() => {
         z-index: 1;
         position: relative;
         margin-left: 9Px;
-        border-bottom: 1Px solid rgba(69, 66, 66, .5);
+        border-bottom: 1.5Px solid rgb(250 250 250);
         span{
           font-size:17Px;
         }
@@ -154,32 +185,57 @@ const loading = computed(() => {
         }
       }
       &-content{
-        height: 69Px;
         display: flex;
         align-items: center;
-        border-bottom: 1Px solid rgba(69, 66, 66, 1);
+        border-bottom: 1.5Px solid rgb(237, 237, 239);
         margin-left: 9Px;
+        padding: 6Px 0;
         span{
-          font-size: 19Px;
+          font-size: 17Px;
           padding: 9Px;
-          color:$color-text-ll;
+          color:rgba(0,0,0,.5);
         }
         .text{
-          padding: 9Px;
-          color:$color-text-ll;
+          color:#000;
+          width: 61%;
+          padding-left: 5Px;
           .song-name{
-            font-size: 17Px;
-            color:aliceblue;
+            font-size: 15.5Px;
+            color:#000;
+            line-height: 25Px;
           }
           .ar-info{
-            font-size: 12Px;
-            padding-top:5Px;
+            width: 100%;
+            font-size: 13.5Px;
+            line-height: 25Px;
+            color:rgba(0,0,0,.6);
+            @include no-wrap();
+            .fee {
+              font-size: 10Px;
+              padding: 0 2.5Px;
+              border-radius: 5Px;
+              border:1Px solid $color-theme;
+              color:$color-theme;
+            }
+          }
+          .award {
+            width: 100%;
+            font-size: 13.5Px;
+            line-height: 19Px;
+            color: rgb(234, 88, 12);
+            @include no-wrap();
+            background-color: rgb(255 237 213);
           }
         }
         .mv{
           margin-left: auto;
           margin-right: 15Px;
-          color:gray
+          color:rgb(101, 100, 100,.7);
+          font-size: 23Px;
+        }
+        .more{
+          color:rgb(101, 100, 100,.7);
+          font-size: 23Px;
         }
       }
     }

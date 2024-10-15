@@ -7,14 +7,18 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddSong: typeof import('./src/components/recommand/AddSong/index.vue')['default']
     Artists: typeof import('./src/components/Pages/artists.vue')['default']
     Bangdan: typeof import('./src/components/Pages/bangdan.vue')['default']
     Boke: typeof import('./src/components/Pages/dj.vue')['default']
     Dj: typeof import('./src/components/Pages/dj.vue')['default']
     Header: typeof import('./src/components/Header/Header.vue')['default']
     Loading: typeof import('./src/components/loading/index.vue')['default']
+    MiniPlayer: typeof import('./src/components/Player/MiniPlayer.vue')['default']
     Music: typeof import('./src/components/Pages/music.vue')['default']
     Mv: typeof import('./src/components/Pages/mv.vue')['default']
+    Player: typeof import('./src/components/Player/Player.vue')['default']
+    PlayList: typeof import('./src/components/PlayList/index.vue')['default']
     Recommand: typeof import('./src/components/recommand/index.vue')['default']
     Remen: typeof import('./src/components/Pages/remen.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -25,6 +29,7 @@ declare module 'vue' {
     Slider: typeof import('./src/components/Slider/index.vue')['default']
     SongBlock: typeof import('./src/components/SongBlock/index.vue')['default']
     Songs: typeof import('./src/components/SearchPages/SearchResult/conponents/songs.vue')['default']
+    SongsLLL: typeof import('./src/components/SearchPages/SearchResult/conponents/songsLLL.vue')['default']
     Suggestion: typeof import('./src/components/SearchPages/suggestion.vue')['default']
     Tab: typeof import('./src/components/Tabs/Tab.vue')['default']
     Tabbar: typeof import('./src/components/Tabbar/index.vue')['default']

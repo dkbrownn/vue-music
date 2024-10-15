@@ -1,16 +1,21 @@
 <script setup>
-
+const list = inject('searchResult-singer')
 </script>
 
 <template>
-<div class="container">
-  <div class="lists" v-for="i in 9">
-    <img >
+<div class="container" >
+  <div class="lists" v-for="i in list">
+    <img :src="i.picUrl">
+    <div class="right">
       <div class="name">
-        <div class="name-1">落雁</div>
-        <div class="name-2">加入TA的粉丝团</div>
+        <div class="name-1">{{i.name}}</div>
+        <div class="name-2">{{i.fansGroup?.text}}</div>
+      </div>
+      <div class="follow">
+        + 关注
       </div>
     </div>
+   </div>
 </div>
 </template>
 
@@ -23,22 +28,28 @@
   right: 0;
   overflow-x: auto;
   padding: 0 15Px;
+  background-color: #fff;
 }
 .lists{
     display: flex;
-    align-items: center;
     padding: 5Px 3Px;
     img{
-      height: 65Px;
-      width: 65Px;
-      border-radius: 9%;
-      background-color: antiquewhite;
+      height: 50Px;
+      width: 50Px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .right{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      border-bottom: 1Px solid rgba(0,0,0,.1);
     }
     .name{
       flex:1;
       margin-left: 25Px;
       line-height: 25Px;
-      color:white;
+      color: #000;;
       font-size: 17Px;
       &-1{
         padding: 5Px 0;
@@ -52,7 +63,7 @@
       font-size: 13Px;
       padding: 5PX 9Px;
       border-radius: 15Px;
-      border: 2Px solid $color-theme;
+      border: 1.5Px solid $color-theme;
       color: $color-theme;
     }
   }

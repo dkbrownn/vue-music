@@ -1,9 +1,10 @@
 <template>
   <div class="tab">
     <router-link class="tab-item" v-for="tab in tabs" :key="tab.path" :to="tab.path">
-      <div class="tab-link iconfont" v-html="tab.html">
+      <div class="tab-link iconfont">
+        <span v-html="tab.html"></span>
       </div>
-      <span class="tab-name">{{ tab.name }}</span>
+      <!-- <span class="tab-name">{{ tab.name }}</span> -->
     </router-link>
   </div>
 </template>
@@ -41,7 +42,7 @@
 <style lang="scss" scoped>
   .tab {
     display: flex;
-    height: 66Px;
+    height: 59Px;
     font-size: $font-size-medium;
     position: absolute;
     bottom: 0;
@@ -49,37 +50,51 @@
     right: 0;
     box-sizing:border-box;
     padding-bottom: 6Px;
-    background-color: #0d101e ;
+    background-color: rgb(239, 239, 239,.3);
+    align-items: end;
     .tab-item {
       flex: 1;
       align-items: center;
       display: flex;
       flex-direction: column;
       justify-content: end;
-      height: 59Px;
-      .tab-link {
-        text-align: center;
-        color: $color-text-l;
-        font-size: 21Px;
-        width:26Px;
-        height: 26Px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      height: 50Px;
+      color:#000;
+      text-decoration: none;
+      .tab-link{
+        width: 21Px;
+        height: 21Px;
+        display: block;
+        padding: 3Px;
+        span{
+          color:#646363;
+          font-size: 21Px;
+          height: 21Px;
+          width: 21Px;
+          font-weight: 300;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
       }
       .tab-name {
-        padding: 6Px 0 0 0;
-        font-size: 13Px;
+        padding: 1Px 0 0 0;
+        font-size: 11Px;
       }
       &.router-link-active {
         .tab-link {
           background-color:$color-theme;
           border-radius: 50%;
           color: $color-img;
+          span{
+            color:#fff;
+            
+          }
         }
         .tab-name {
-        color: $color-theme;
-      }
+          color: $color-theme;
+        }
       }
     }
   }

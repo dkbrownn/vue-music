@@ -19,6 +19,7 @@
   display: flex;
   align-items: center;
   height: 39Px;
+  color:#000;
   .more{
     font-size: 27Px;
   }

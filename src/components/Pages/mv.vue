@@ -11,13 +11,14 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="container">
-<span>最新MV</span>
-<div class="grid">
-  <div class="grid-mv"></div>
-</div>
-<span>推荐MV</span>
-</div>
+  <div class="container">
+    <div class="his-play" @click="$router.push('/hislisten')">
+      <span class="iconfont">&#xe8bd;</span>最近播放
+    </div>
+    <div class="my-love" @click="$router.push('/mylove')">
+      <span class="iconfont">&#xe8bd;</span>我的喜欢
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -27,42 +28,28 @@ onMounted(() => {
   bottom:0;
   left: 0;
   right: 0;
-  background-color: aqua;
   overflow-y: auto;
   padding: 15Px 9Px 0 9Px;
   font-size: 21Px;
-  .dj{
-    margin-top:25Px;
-    height: 111Px;
-    background-color: antiquewhite;
-    border-radius: 11Px;
-    display: flex;
-    align-items: center;
+  color:#000;
+  background-color: rgb(241 245 249);
+  .iconfont {
+    font-size: 17Px;
+  }
+  .his-play, .my-love{
+    text-align: center;
+    display: inline-block;
+    width: 100Px;
+    line-height: 40Px;
+    font-size:15Px;
+    background-color: #fff;
     padding: 0 15Px;
-    &-img{
-      background-color: blueviolet;
-      height: 70Px;
-      width: 70Px;
-      background-size: cover;
-    }
-    &-desc{
-      background-color: aqua;
-      height: 70Px;
-      width: 80%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      margin-left: 15Px;
-      &-tag{
-        font-size: 13Px;
-        padding-bottom: 3Px;
-      }
-      &-title{
-        font-size: 16Px;
-      }
-      &-count{
-        font-size: 11Px;
-      }
+    border-radius: 17Px;
+    color:rgba(0,0,0,.9);
+    margin-right: 25Px;
+    span{
+      padding:0 15Px 0 0;
+      color:rgba(0,0,0,.5);
     }
   }
 }
