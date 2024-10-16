@@ -67,10 +67,7 @@ const loading = computed(() => {
     </div>
   </Scroll>
 </div>
-<div class="banner" :style="{
-  backgroundImage: 'url(/public/stock-vector-retro-music-set-with-torn-put-paper-halftone-dotted-collage-elements-set-audio-reel-to-reel-tape-2487321123.jpg)'
-}">
-</div>
+<img class="banner" src="/public/djBanner.jpg"/>
 <span>为你推荐的电台 ></span>
 <div class="dj-container">
   <Scroll class="scroll" :scrollX="true">
@@ -178,7 +175,8 @@ const loading = computed(() => {
     }
   }
   .banner {
-    height: 150Px;
+    height: 155Px;
+    width: 100%;
     background-color: rgba(180, 199, 227, 0.5);
     margin:21Px 0;
     background-size: cover;
