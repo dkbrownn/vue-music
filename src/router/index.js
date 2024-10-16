@@ -61,12 +61,12 @@ const router = createRouter({
         {
           name: 'roam',
           path: 'roam',
-          component: Recommand,
+          component: NotFind,
         },
         {
           name: 'dynamics',
           path: 'dynamics',
-          component: Dynamic,
+          component: NotFind,
         },
         {
           name: 'my',

@@ -38,9 +38,15 @@
     margin: 0 auto;
     justify-content: center;
     align-items: center;
-    color:#8a8a8a;
     font-weight: 500;
     font-size: 8.5px;
+    .tab-link{
+      padding: 6Px 0 6Px 0;
+      margin: 0 9Px;
+      line-height: 39Px;
+      position: relative;
+      color:rgba(0,0,0,.7);
+    } 
     .router-link-active{
       color:#000;
       font-weight: 700;
@@ -58,14 +64,6 @@
       //   opacity:0;
       //   animation: tabLink .6s ;
       // }
-    }
-    .tab-link{
-      padding: 6Px 0 6Px 0;
-      margin: 0 9Px;
-      line-height: 39Px;
-      position: relative;
-    } 
-    span{
     }
   }
   .voice{

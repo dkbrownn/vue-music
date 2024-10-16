@@ -59,35 +59,37 @@ const addToPlayList = (obj) => {
       <span class="iconfont back" @click="$router.back">&#xe612;</span>
       <span class="iconfont dot">&#xe747;</span>
     </div>
-    <div class="backgroud-img" :style="{'background-image': `url(http://p1.music.126.net/EawqbkXCxGmxZ6nnqTKxKw==/109951165566992331.jpg)`}"></div>
-    <div class="song" ref="el">
-      <div class="song-info">
-        <div class="song-info-cname">Beyond</div>
-        <div class="song-info-yname">超越</div>
-        <div class="song-info-fins">{{singerAllInfo.fins}}粉丝</div>
-        <div class="song-info-title"><span v-for="value in singerAllInfo.info">{{ value.expertIdentiyName
- }}、</span></div>
-      </div>
-      <div class="song-music">
-        <div class="song-music-bar">
-          <span class="play iconfont">&#xe609;</span>
-          <span class="text" @click="store.selectPlay(singerAllInfo.topFifty,0)">播放全部</span>
-        </div>
-        <div class="song-music-content" v-for="(item, index) in singerAllInfo.topFifty" @click="store.selectPlay(singerAllInfo.topFifty,index)">
-          <span class="iconfont index">{{index}}</span>
-          <div class="text">
-            <div class="song-name">{{item.name}}</div>
-            <div class="ar-info">
-          <span class="fee" v-show="item.fee === 1">VIP</span>
-          {{item.ar[0].name}} {{item.al?.name}}</div>
-          <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
+    <div class="backgroud-img" :style="{'background-image': `url(http://p2.music.126.net/1qr8a9G8pWEMoruLJaBv8A==/109951169014564421.jpg)`}"></div>
+      <Scroll class="song" ref="el">
+        <div>
+          <div class="song-info">
+            <div class="song-info-cname">Beyond</div>
+            <div class="song-info-yname">超越</div>
+            <div class="song-info-fins">{{singerAllInfo.fins}}粉丝</div>
+            <div class="song-info-title"><span v-for="value in singerAllInfo.info">{{ value.expertIdentiyName
+    }}、</span></div>
           </div>
-          <span class="iconfont mv">&#xe645;</span>
-          <span class="iconfont more"  @click.stop="addToPlayList(
-            {songName:item.name,arName:item.ar[0].name,img:item.al.picUrl,allInfo: item})">&#xe747;</span>
+          <div class="song-music">
+            <div class="song-music-bar">
+              <span class="play iconfont">&#xe609;</span>
+              <span class="text" @click="store.selectPlay(singerAllInfo.topFifty,0)">播放全部</span>
+            </div>
+            <div class="song-music-content" v-for="(item, index) in singerAllInfo.topFifty" @click="store.selectPlay(singerAllInfo.topFifty,index)">
+              <span class="iconfont index">{{index}}</span>
+              <div class="text">
+                <div class="song-name">{{item.name}}</div>
+                <div class="ar-info">
+              <span class="fee" v-show="item.fee === 1">VIP</span>
+              {{item.ar[0].name}} {{item.al?.name}}</div>
+              <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
+              </div>
+              <span class="iconfont mv">&#xe645;</span>
+              <span class="iconfont more"  @click.stop="addToPlayList(
+                {songName:item.name,arName:item.ar[0].name,img:item.al.picUrl,allInfo: item})">&#xe747;</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </Scroll>
     <Toast :info="info" :show="showToast" @change="() => showToast = false"/>
   </div>
 </template>
@@ -126,18 +128,22 @@ const addToPlayList = (obj) => {
     }
   }
   .backgroud-img{
-    padding-top: 91%;
+    padding-top: 100%;
     background-size: cover;
     background-position: center; 
     background-repeat: no-repeat;
+    position: relative;
+    z-index:-1;
   }
   .song{
     position: absolute;
-    top: 0Px;
+    top: 0;
     bottom: 0;
     left:0;
     right:0;
-    overflow-y: auto;
+    overflow: hidden;
+    z-index: 100;
+    padding-top:100%;
     &-info{
       display: flex;
       flex-direction: column;

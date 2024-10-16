@@ -20,12 +20,12 @@ const handleTab = (index) => {
 }
   const tabs = [
     {
-      html: '&#xe732;',
+      html: '&#xe600;',
       path: '/recommend',
       name: '推荐'
     },
     {
-      html: '&#xe600;',
+      html: '&#xe688;',
       path: '/find',
       name: '发现'
     },
@@ -35,12 +35,12 @@ const handleTab = (index) => {
       name: '漫游'
     },
     {
-      html: '&#xe64f;',
+      html: '&#xe60c;',
       path: '/dynamics',
       name: '动态'
     },
     {
-      html: '&#xe60f;',
+      html: '&#xe60d;',
       path: '/my',
       name: '我的'
     }
@@ -73,6 +73,7 @@ const handleTab = (index) => {
       transform: translateY(15Px);
       .tab-name {
         padding: 3Px;
+        padding-top:5Px;
         font-size: 11Px;
         transition: all .5s;
       }

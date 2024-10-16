@@ -83,16 +83,18 @@ const onClick = (list) => {
             </div>
             <span class="user-name">{{list.creator?.nickname}}</span>
           </div>
-          <div class="tag">
+          <!-- <div class="tag">
             <span v-for="i in list.tags" class="tag-info">{{i}}</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="desc">{{ list.description }}</div>
       <div class="iconfont icon">
-        <div> <span class="iconfont">&#xe633;</span>{{ list.shareCount }}</div>
-        <div> <span class="iconfont">&#xe633;</span>{{ list.playCount }}</div>
-        <div> <span class="iconfont">&#xe74e;</span>{{ list.commentCount }}</div>
+        <div> <span class="iconfont">&#xe633;</span>
+          {{ list.shareCount }}
+        </div>
+        <div> <span class="iconfont">&#xe611;</span>{{ list.commentCount }}</div>
+        <div class="red"> <span class="iconfont">&#xe74e;</span>{{ list.subscribedCount }}</div>
       </div>
       <div class="song-music">
         <div class="song-music-bar" ref="songBar">
@@ -107,7 +109,9 @@ const onClick = (list) => {
             <div class="song-name">{{item.name}}</div>
             <div class="ar-info">
               <span class="fee" v-show="item.fee === 1">VIP</span>
-              {{item.ar[0].name}} {{item.al.name}}
+              <span>
+                {{item.ar[0].name}} {{item.al.name}}
+              </span>
             </div>
             <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
           </div>
@@ -134,6 +138,7 @@ const onClick = (list) => {
   bottom: 0;
   background-color: rgba(0,0,0,0);
   color:#fff;
+  font-family: Roboto, sans-serif;
   .background{
     position: absolute;
     background-color: rgb(250, 113, 113);
@@ -246,7 +251,7 @@ const onClick = (list) => {
             margin: 0 6Px;
             text-align: center;
             background-color: #ccced5;
-            width: 29Px;
+            padding: 1Px 5Px;
             line-height: 15Px;
             border-radius: 1Px;
             border-radius: 3Px;
@@ -254,9 +259,9 @@ const onClick = (list) => {
         }
       }
       &-block{
-        height:111Px;
-        width:111Px;
-        min-width:111Px;
+        height:100Px;
+        width:100Px;
+        min-width:100Px;
         background-size: cover;
         border-radius: 9Px;
       }
@@ -272,7 +277,7 @@ const onClick = (list) => {
     }
     .icon {
       display: flex;
-      height: 71Px;
+      height: 65Px;
       justify-content: space-around;
       align-items: center;
       div {
@@ -281,8 +286,18 @@ const onClick = (list) => {
         background-color: rgba(229, 229, 229, .3);
         border-radius: 19Px;
         font-size: 16Px;
-        text-align: center;
-        color:#ccced5;
+        color:#fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .iconfont {
+         color:#fff;
+         font-size: 15Px;
+         padding-right: 5Px;
+        }
+      }
+      .red {
+        background-color: rgb(239, 69, 69);
       }
     }
     &-music{
@@ -303,7 +318,7 @@ const onClick = (list) => {
           margin: 0 9Px;
         }
         .play{
-          font-size: 23Px;
+          font-size: 25Px;
           color: $color-theme;
         }
         .list{
@@ -326,36 +341,43 @@ const onClick = (list) => {
           color:rgba(0,0,0,.5)
         }
         .text{
-          flex:1;
+          width: 230Px;
           padding: 0Px;
           color:rgba(0,0,0,.9);
           .song-name{
-            font-size: 16Px;
+            font-size: 15.5Px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
           }
           .ar-info{
-            font-size: 12Px;
+            font-size: 13Px;
             padding-top:7Px;
-            width: 70%;
             color:rgba(0,0,0,.7);
             text-overflow: ellipsis;
             overflow: hidden;
             word-break: break-all;
             white-space: nowrap;
             padding-bottom: 2Px;
+            
+            span {
+              font-size: 13Px;
+              color:rgba(0,0,0,.5);
+              padding:0 0 0 5Px;
+              vertical-align: middle;
+            }
             .fee {
               font-size: 10Px;
               padding: 0 2.5Px;
               border-radius: 5Px;
               border:1Px solid $color-theme;
               color:$color-theme;
+              vertical-align: middle;
             }
             .award {
             width: 100%;
-            font-size: 13.5Px;
+            font-size: 12Px;
             line-height: 19Px;
             color: rgb(234, 88, 12);
             @include no-wrap();
@@ -364,11 +386,14 @@ const onClick = (list) => {
           }
         }
         .mv{
+          margin-left: auto;
           color:rgba(0,0,0,.3);
-          font-weight: 600;
+          font-weight: 500;
+          font-size: 23Px;
         }
         .more{
-          color:rgba(0,0,0,.3)
+          color:rgba(0,0,0,.3);
+          font-size: 23Px;
         }
       }
     }

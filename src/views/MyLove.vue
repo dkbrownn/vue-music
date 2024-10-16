@@ -49,7 +49,7 @@ watch(scrollY, (newY) => {
         <div class="ar-info">
           <span class="fee" v-show="item.fee === 1">VIP</span>
           {{item.ar[0].name}} {{item.al?.name}}</div>
-          <div class="award" v-show="item.awardTags">{{ item.awardName }}</div>
+          <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
       </div>
       <span class="iconfont mv">&#xe645;</span>
       <span class="iconfont more" @click.stop="addToPlayList(
@@ -117,11 +117,11 @@ watch(scrollY, (newY) => {
       color:#000;
       border-bottom: 1Px solid rgb(185, 185, 185,.5);
       span{
-        font-size:19Px;
+        font-size:17Px;
         margin: 0 15Px 0 0;
       }
       .play{
-        font-size: 26Px;
+        font-size: 25Px;
         color: $color-theme;
       }
       .list{
@@ -147,7 +147,7 @@ watch(scrollY, (newY) => {
         padding: 0Px 1Px;
         color:rgba(0,0,0,.9);
         .song-name{
-          font-size: 17Px;
+          font-size: 15.5Px;
           overflow: hidden;
           display: -webkit-box;
           -webkit-line-clamp: 1;
@@ -167,16 +167,26 @@ watch(scrollY, (newY) => {
               border-radius: 5Px;
               border:1Px solid $color-theme;
               color:$color-theme;
-            }
+          }
+        }
+        .award {
+          display: inline-block;
+          font-size: 12Px;
+          line-height: 17Px;
+          color: rgb(234, 88, 12);
+          @include no-wrap();
+          background-color: rgb(255 237 213);
         }
       }
       .mv{
         margin-left: auto;
         color:rgba(0,0,0,.3);
-        font-weight: 600;
+        font-weight: 500;
+        font-size: 23Px;
       }
       .more{
-        color:rgba(0,0,0,.3)
+        color:rgba(0,0,0,.3);
+        font-size: 23Px;
       }
     }
   }

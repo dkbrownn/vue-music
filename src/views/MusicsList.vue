@@ -42,14 +42,16 @@ onMounted(() => {
   position: relative;
   z-index:1;
   padding: 6Px 15Px;
+  display: flex;
+  align-items: center;
   .back {
+    vertical-align: top;
     font-size: 21Px;
-    vertical-align: middle;
   }
   .name {
+    vertical-align: top;
     margin-left: 25Px;
     font-size: 21Px;
-    vertical-align: middle;
   }
 }
 .scroll {

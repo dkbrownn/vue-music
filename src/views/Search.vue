@@ -191,6 +191,9 @@ provide('inputVal', inputVal)
   align-items: center;
   justify-content:space-around;
   height: 39Px;
+  background-color: rgb(236, 243, 250);
+  position: relative;
+  z-index:1;
   .more{
     font-size: 21Px;
   }
@@ -229,6 +232,7 @@ provide('inputVal', inputVal)
   right: 0;
   bottom: 0;
   padding:15Px 5Px 0 5Px;
+  background-color: rgb(236, 243, 250);
   .scroll {
     height: 100%;
     width: 100%;

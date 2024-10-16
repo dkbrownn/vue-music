@@ -56,6 +56,9 @@ const onPullUp = () => {
 <style scoped lang='scss'>
 .tabs{
   display: flex;
+  position: relative;
+  z-index: 5;
+  background-color: rgb(236, 243, 250);
   .tab{
     position: relative;
     flex:1;

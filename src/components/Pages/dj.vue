@@ -32,11 +32,13 @@ const playCount = (count) => {
     return count+'万'
   }
 }
-
+const loading = computed(() => {
+  return types.value.length > 0 && list.value.length > 0
+})
 </script>
 
 <template>
-<div class="container">
+<div class="container" v-loading="!loading">
 <Scroll class="container-scroll">
   <div>
 <div class="iconfont search" @click="$router.push('/search')">

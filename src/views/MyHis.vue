@@ -46,7 +46,9 @@ watch(scrollY, (newY) => {
       <!-- @click.stop="store.randomPlay(list.tracks)" -->
       <div class="text">
         <div class="song-name">{{item.name}}</div>
-        <div class="ar-info">{{item.ar[0].name}} {{item.al?.name}}</div>
+        <div class="ar-info"><span class="fee" v-show="item.fee === 1">VIP</span>
+          {{item.ar[0].name}} {{item.al?.name}}</div>
+          <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
       </div>
       <span class="iconfont mv">&#xe645;</span>
       <span class="iconfont more" @click.stop="addToPlayList(
@@ -144,7 +146,7 @@ watch(scrollY, (newY) => {
         color:rgba(0,0,0,.9);
         width: 75%;
         .song-name{
-          font-size: 17Px;
+          font-size: 15.5Px;
           overflow: hidden;
           display: -webkit-box;
           -webkit-line-clamp: 1;
@@ -154,15 +156,32 @@ watch(scrollY, (newY) => {
           font-size: 13Px;
           padding-top:7Px;
           color:rgba(0,0,0,.7);
+          .fee {
+              font-size: 10Px;
+              padding: 0 2.5Px;
+              border-radius: 5Px;
+              border:1Px solid $color-theme;
+              color:$color-theme;
+          }
+        }
+        .award {
+          display: inline-block;
+          font-size: 12Px;
+          line-height: 17Px;
+          color: rgb(234, 88, 12);
+          @include no-wrap();
+          background-color: rgb(255 237 213);
         }
       }
       .mv{
         margin-left: auto;
         color:rgba(0,0,0,.3);
-        font-weight: 600;
+        font-weight: 500;
+        font-size: 23Px;
       }
       .more{
-        color:rgba(0,0,0,.3)
+        color:rgba(0,0,0,.3);
+         font-size: 23Px;
       }
     }
   }
