@@ -101,7 +101,7 @@ const playCount = (count) => {
   .search {
     margin: 7Px 0 15Px 0;
     height: 25Px;
-    background-color: #f5f5f5;
+    background-color: #e9ebf2;
     padding: 3Px 19Px;
     border-radius: 29Px;
     display: flex;

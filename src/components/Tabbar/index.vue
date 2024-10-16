@@ -1,38 +1,46 @@
 <template>
   <div class="tab">
-    <router-link class="tab-item" v-for="tab in tabs" :key="tab.path" :to="tab.path">
+    <router-link class="tab-item" v-for="(tab, index) in tabs" :key="tab.path" :to="tab.path" @click="handleTab(index)"
+    :class="{
+      trans: index === currentTab
+    }"
+    >
       <div class="tab-link iconfont">
         <span v-html="tab.html"></span>
       </div>
-      <!-- <span class="tab-name">{{ tab.name }}</span> -->
+      <span class="tab-name">{{ tab.name }}</span>
     </router-link>
   </div>
 </template>
 
 <script setup>
+const currentTab = ref(1)
+const handleTab = (index) => {
+  currentTab.value = index
+}
   const tabs = [
     {
-      html: '&#xe600;',
+      html: '&#xe732;',
       path: '/recommend',
       name: '推荐'
     },
     {
-      html: '&#xe732;',
+      html: '&#xe600;',
       path: '/find',
       name: '发现'
     },
     {
-      html: '&#xe98d;',
+      html: '&#xe60b;',
       path: '/roam',
       name: '漫游'
     },
     {
-      html: '&#xe607;',
+      html: '&#xe64f;',
       path: '/dynamics',
       name: '动态'
     },
     {
-      html: '&#xe626;',
+      html: '&#xe60f;',
       path: '/my',
       name: '我的'
     }
@@ -42,16 +50,16 @@
 <style lang="scss" scoped>
   .tab {
     display: flex;
-    height: 59Px;
+    height: 50Px;
     font-size: $font-size-medium;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     box-sizing:border-box;
-    padding-bottom: 6Px;
     background-color: rgb(239, 239, 239,.3);
     align-items: end;
+    box-shadow: 4Px 0PX 9Px 3Px #e7e7e7;
     .tab-item {
       flex: 1;
       align-items: center;
@@ -61,14 +69,18 @@
       height: 50Px;
       color:#000;
       text-decoration: none;
-      .tab-link{
-        width: 21Px;
-        height: 21Px;
-        display: block;
+      transition: all .5s;
+      transform: translateY(15Px);
+      .tab-name {
         padding: 3Px;
+        font-size: 11Px;
+        transition: all .5s;
+      }
+      .tab-link{
         span{
-          color:#646363;
-          font-size: 21Px;
+          transition: all .5s;
+          color:#757474;
+          font-size: 25Px;
           height: 21Px;
           width: 21Px;
           font-weight: 300;
@@ -78,24 +90,23 @@
         }
         
       }
-      .tab-name {
-        padding: 1Px 0 0 0;
-        font-size: 11Px;
-      }
       &.router-link-active {
         .tab-link {
-          background-color:$color-theme;
-          border-radius: 50%;
-          color: $color-img;
-          span{
-            color:#fff;
-            
+         // background-color:$color-theme;
+          //border-radius: 50%;
+          span {
+            color:$color-theme;
           }
+          
         }
         .tab-name {
           color: $color-theme;
         }
       }
+    }
+
+    .trans {
+       transform: translateY(0);
     }
   }
 </style>

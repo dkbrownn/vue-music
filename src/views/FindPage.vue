@@ -40,11 +40,11 @@
     align-items: center;
     color:#8a8a8a;
     font-weight: 500;
-    font-size: 8px;
+    font-size: 8.5px;
     .router-link-active{
       color:#000;
       font-weight: 700;
-      transform: scale(1.1);
+      font-size: 9.5px;
       // div{
       //   position: absolute;
       //   z-index:-1;

@@ -53,6 +53,7 @@ const onClick = (list) => {
   showList.show = true
   showList.List = list
 }
+
 </script>
 
 <template>
@@ -69,26 +70,29 @@ const onClick = (list) => {
       <span class="list iconfont">&#xe62d;</span>
     </div>
     <div class="song" ref="el">
-      <Scroll class="song-scroll">
+      <Scroll class="song-scroll" :probeType="3" @scroll="onScroll">
       <div>
       <div class="song-content">
         <div class="song-content-block" :style="{'background-image': `url(${list.coverImgUrl})`}"></div>
         <div class="song-content-info">
           <div class="name">{{ list.name }}</div>
           <div class="user">
-            <div class="user-icon"></div>
-            <span class="user-name">你好云音乐</span>
+            <div class="user-icon" :style="{
+              backgroundImage: `url(${list.creator?.backgroundUrl})`
+            }">
+            </div>
+            <span class="user-name">{{list.creator?.nickname}}</span>
           </div>
           <div class="tag">
-            <span v-for="i in 3" class="tag-info">华语</span>
+            <span v-for="i in list.tags" class="tag-info">{{i}}</span>
           </div>
         </div>
       </div>
       <div class="desc">{{ list.description }}</div>
       <div class="iconfont icon">
-        <div></div>
-        <div></div>
-        <div></div>
+        <div> <span class="iconfont">&#xe633;</span>{{ list.shareCount }}</div>
+        <div> <span class="iconfont">&#xe633;</span>{{ list.playCount }}</div>
+        <div> <span class="iconfont">&#xe74e;</span>{{ list.commentCount }}</div>
       </div>
       <div class="song-music">
         <div class="song-music-bar" ref="songBar">
@@ -102,10 +106,10 @@ const onClick = (list) => {
           <div class="text">
             <div class="song-name">{{item.name}}</div>
             <div class="ar-info">
-              <span class="fee">VIP</span>
+              <span class="fee" v-show="item.fee === 1">VIP</span>
               {{item.ar[0].name}} {{item.al.name}}
             </div>
-            <div class="award" v-show="item.awardTags">{{ item.awardTags }}</div>
+            <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
           </div>
           <span class="iconfont mv">&#xe645;</span>
           <span class="iconfont more" @click.stop="addToPlayList(
@@ -129,6 +133,7 @@ const onClick = (list) => {
   right:0;
   bottom: 0;
   background-color: rgba(0,0,0,0);
+  color:#fff;
   .background{
     position: absolute;
     background-color: rgb(250, 113, 113);
@@ -165,16 +170,16 @@ const onClick = (list) => {
   .top-bar{
     display: flex;
     align-items: center;
-    padding: 9Px 6Px 9Px 6Px;
+    padding: 9Px 6Px 16Px 5Px;
     position: relative;
-    z-index: 1;
+    background-color: transparent;
     .song-text{
       margin-right: auto;
-      font-size: 15Px;
+      font-size: 18Px;
       padding-left: 15Px;
     }
     .iconfont{
-      font-size:19Px;
+      font-size:21Px;
       padding: 0 13Px;
     }
     .back{
@@ -186,7 +191,7 @@ const onClick = (list) => {
   }
   .song{
     position: absolute;
-    top: 59Px;
+    top: 50Px;
     bottom: 0;
     left:0;
     right:0;
@@ -199,32 +204,37 @@ const onClick = (list) => {
     .song-content{
       display: flex;
       padding: 5Px 9Px 9Px 9Px;
+      align-items: center;
       &-info{
         flex:1;
         font-size: 17Px;
         padding: 0 9Px 0 9Px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
         .name{
+          max-width: 211Px;
+          min-width: 50%;
           margin-bottom: 5Px;
-          width: 125px;
           overflow: hidden;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           line-height: 25Px;
-          font-size: 15Px;
+          font-size: 17Px;
         }
         .user{
           padding-bottom: 9Px; 
           display: flex;
           align-items: center;
           &-icon{
-            width: 29Px;
-            height: 29Px;
+            width: 36Px;
+            height: 36Px;
             border-radius: 50%;
-            background-color: coral;
+            background-size: cover;
           }
           &-name{
-            font-size: 13Px;
+            font-size: 14Px;
             margin-left: 11Px;
           }
         }
@@ -233,19 +243,20 @@ const onClick = (list) => {
           margin-top:5Px;
           &-info{
             display: inline-block;
-            background-color: gray;
             margin: 0 6Px;
             text-align: center;
+            background-color: #ccced5;
             width: 29Px;
             line-height: 15Px;
             border-radius: 1Px;
+            border-radius: 3Px;
           }
         }
       }
       &-block{
-        height:99Px;
-        width:99Px;
-        min-width:99Px;
+        height:111Px;
+        width:111Px;
+        min-width:111Px;
         background-size: cover;
         border-radius: 9Px;
       }
@@ -257,7 +268,7 @@ const onClick = (list) => {
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       line-height: 17Px;
-      font-size: 14Px;
+      font-size: 15Px;
     }
     .icon {
       display: flex;
@@ -269,6 +280,9 @@ const onClick = (list) => {
         width: 100Px;
         background-color: rgba(229, 229, 229, .3);
         border-radius: 19Px;
+        font-size: 16Px;
+        text-align: center;
+        color:#ccced5;
       }
     }
     &-music{
@@ -312,6 +326,7 @@ const onClick = (list) => {
           color:rgba(0,0,0,.5)
         }
         .text{
+          flex:1;
           padding: 0Px;
           color:rgba(0,0,0,.9);
           .song-name{
@@ -324,7 +339,7 @@ const onClick = (list) => {
           .ar-info{
             font-size: 12Px;
             padding-top:7Px;
-            width: 250Px;
+            width: 70%;
             color:rgba(0,0,0,.7);
             text-overflow: ellipsis;
             overflow: hidden;
@@ -338,10 +353,17 @@ const onClick = (list) => {
               border:1Px solid $color-theme;
               color:$color-theme;
             }
+            .award {
+            width: 100%;
+            font-size: 13.5Px;
+            line-height: 19Px;
+            color: rgb(234, 88, 12);
+            @include no-wrap();
+            background-color: rgb(255 237 213);
+          }
           }
         }
         .mv{
-          margin-left: auto;
           color:rgba(0,0,0,.3);
           font-weight: 600;
         }

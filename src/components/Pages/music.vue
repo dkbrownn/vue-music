@@ -33,6 +33,16 @@ const loading = computed(() => {
 })
 console.log(loading)
 const loadingText = '正在拼命加载中'
+
+
+const conversionNumber = (number) => {
+  if (number > 10000 ) {
+    return number%10000+'万'
+  }
+  else {
+    return number
+  }
+}
 </script>
 
 <template>
@@ -62,9 +72,18 @@ const loadingText = '正在拼命加载中'
       <span>推荐歌单</span>
       <div class="right" @click="$router.push('/musiclists')">查看更多</div>
     </div>
-    <div class="block-wrapper">
-      <SongBlock :list="recommandList.slice(0,16)" />
-    </div>
+    <Scroll class="scroll" :scrollX="true">
+      <div class="scroll-wrapper">
+        <div class="block-container" v-for="item in   recommandList.slice(0,6)">
+          <RouterLink :to="`/songdetail/${item.id}`">
+            <div class="block" :style="{'background-image': `url(${item.picUrl})`}">
+              <div class="iconfont listen">&#xe693; {{conversionNumber(item.playCount)}}</div>
+            </div>
+          </RouterLink>
+          <div class="text">{{item.name}}</div>
+        </div>
+      </div>
+    </Scroll>
     
   </div>
 </template>
@@ -120,21 +139,43 @@ const loadingText = '正在拼命加载中'
   border-radius: 3px;
   overflow: hidden;
 }
-.block-wrapper {
-  display: grid;
-  // grid-template-columns: 1fr 1fr 1fr;
-  // grid-template-rows: 1fr 1fr 1fr;
-  row-gap: 3Px;
-  column-gap: 3Px;
-}
-@media screen and (max-width: 500Px) {
-  .block-wrapper {
-    grid-template-columns: 1fr 1fr 1fr;
+.scroll {
+  height: 150Px;
+  width: 100%;
+   display: flex;
+  overflow: hidden;
+  &-wrapper {
+    white-space: nowrap;
+    vertical-align: top;
+    .block-container {
+      display: inline-block;
+      vertical-align:top;
+      color:#000;
+      padding:5Px 5Px;
+      .block{
+        height: 111PX;
+        width: 111PX;
+        background-color: $color-highlight-background;
+        position: relative;
+        border-radius: 9%;
+        background-size:cover;
+        .listen{
+          font-size: 5px;
+          padding: 7Px 0 0 7Px;
+          color: #100f0f;
+        }
+      }
+      .text{
+        width: 111PX;
+        height: 100%;
+        line-height: 25Px;
+        font-size: 15Px;
+        padding-top: 6Px;
+        white-space: wrap;
+        display: block;
+      }
+    }
   }
 }
-@media screen and (min-width: 500Px) {
-  .block-wrapper {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-}
+
 </style>

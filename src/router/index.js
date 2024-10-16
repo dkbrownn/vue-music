@@ -15,6 +15,7 @@ import Suggestion from '@/components/SearchPages/suggestion.vue'
 import MyHis from '@/views/MyHis.vue'
 import MyLove from '@/views/MyLove.vue'
 import MusicsList from '@/views/MusicsList.vue'
+import NotFind from '@/views/404.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -22,12 +23,12 @@ const router = createRouter({
       path:'/',
       name: 'home',
       component: HomePage,
-      redirect: '/recommend',
+      redirect: '/find',
       children: [
         {
           path: 'recommend',
           name: 'recommend',
-          component: Recommand,
+          component: NotFind,
         },
         {
           name: 'find',
@@ -70,12 +71,17 @@ const router = createRouter({
         {
           name: 'my',
           path: 'my',
-          component: Recommand,
+          component: NotFind,
         },
         {
           name: 'user',
           path: 'user',
-          component: Recommand,
+          component: NotFind,
+        },
+        {
+          name: '404',
+          path:'404',
+          component: NotFind,
         }
       ]
     },
