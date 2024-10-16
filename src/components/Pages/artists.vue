@@ -129,7 +129,7 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
   li{
     font-size: 15Px;
     font-weight: 500;
-    padding: 5Px 0;
+    padding: 1.5Px 0;
   }
 }
 

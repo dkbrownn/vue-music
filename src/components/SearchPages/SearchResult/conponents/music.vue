@@ -32,22 +32,23 @@ const result = inject('searchResult-song')
 
 <template>
 <div class="container">
-  <div class="song-music"  ref="rootRef">
-    <div>
-      <div class="song-music-bar">
-        <span class="play iconfont">&#xe609;</span>
-        <span class="text">播放全部</span>
-      </div>
-      <div class="song-music-content" v-for="i in result.songs">
-        <div class="text">
-          <div class="song-name">{{i.name}}</div>
-          <div class="ar-info">{{i.artists?.[0].name}}</div>
-        </div>
-        <span class="iconfont mv">&#xe645;</span>
-        <span class="iconfont more" >&#xe747;</span>
-      </div>
+   <Scroll class="scroll">
+    <div class="song-music"  ref="rootRef">
+    
+          <div class="song-music-bar">
+            <span class="play iconfont">&#xe609;</span>
+            <span class="text">播放全部</span>
+          </div>
+          <div class="song-music-content" v-for="i in result.songs">
+            <div class="text">
+              <div class="song-name">{{i.name}}</div>
+              <div class="ar-info">{{i.artists?.[0].name}}</div>
+            </div>
+            <span class="iconfont mv">&#xe645;</span>
+            <span class="iconfont more" >&#xe747;</span>
+          </div>
     </div>
-  </div>
+  </Scroll>
 </div>
 </template>
 
@@ -58,7 +59,10 @@ const result = inject('searchResult-song')
   bottom: 0;
   left: 0;
   right: 0;
-  //overflow-x: auto;
+  .scroll {
+    height: 100%;
+    width: 100%;
+  }
 }
 .song-music{
   background-color: #fff;
@@ -72,11 +76,11 @@ const result = inject('searchResult-song')
     position: relative;
     border-bottom: 1Px solid $color-text-d;
     span{
-      font-size:17Px;
+      font-size:19Px;
       margin: 0 9Px;
     }
     .play{
-      font-size: 23Px;
+      font-size: 25Px;
       color: $color-theme;
     }
   }
@@ -86,7 +90,7 @@ const result = inject('searchResult-song')
     align-items: center;
     border-bottom: 1Px solid rgba(0,0,0,.1);
     span{
-      font-size: 25Px;
+      font-size: 19Px;
       padding: 9Px;
       color:rgba(0,0,0,.5);
     }
@@ -101,7 +105,7 @@ const result = inject('searchResult-song')
         -webkit-box-orient: vertical;
       }
       .ar-info{
-        font-size: 13Px;
+        font-size: 15Px;
         padding-top:3Px;
         color:rgba(0,0,0,.7);
       }

@@ -31,10 +31,13 @@
     transform: translate3d(-50%, -50%, 0);
     .loading-content {
       text-align: center;
+      img {
+        color:#000;
+      }
       .desc {
         line-height: 20px;
-        font-size: $font-size-small;
-        color: $color-text-l;
+        font-size: 25Px;
+        color: #bdbcbc;
       }
     }
   }

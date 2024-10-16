@@ -49,7 +49,7 @@ watch(scrollY, (newY) => {
         <div class="ar-info">
           <span class="fee" v-show="item.fee === 1">VIP</span>
           {{item.ar[0].name}} {{item.al?.name}}</div>
-          <div class="award" v-show="item.awardTags">{{ item.awardName }}</div>
+          <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
       </div>
       <span class="iconfont mv">&#xe645;</span>
       <span class="iconfont more" @click.stop="addToPlayList(
@@ -167,7 +167,15 @@ watch(scrollY, (newY) => {
               border-radius: 5Px;
               border:1Px solid $color-theme;
               color:$color-theme;
-            }
+          }
+        }
+        .award {
+          display: inline-block;
+          font-size: 13.5Px;
+          line-height: 19Px;
+          color: rgb(234, 88, 12);
+          @include no-wrap();
+          background-color: rgb(255 237 213);
         }
       }
       .mv{

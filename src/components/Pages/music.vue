@@ -140,21 +140,21 @@ const conversionNumber = (number) => {
   overflow: hidden;
 }
 .scroll {
-  height: 150Px;
   width: 100%;
    display: flex;
   overflow: hidden;
   &-wrapper {
     white-space: nowrap;
     vertical-align: top;
+    padding: 0 10Px;
     .block-container {
       display: inline-block;
       vertical-align:top;
       color:#000;
       padding:5Px 5Px;
       .block{
-        height: 111PX;
-        width: 111PX;
+        height: 95PX;
+        width: 95PX;
         background-color: $color-highlight-background;
         position: relative;
         border-radius: 9%;
@@ -166,13 +166,15 @@ const conversionNumber = (number) => {
         }
       }
       .text{
-        width: 111PX;
-        height: 100%;
-        line-height: 25Px;
+        width: 95PX;
         font-size: 15Px;
         padding-top: 6Px;
         white-space: wrap;
-        display: block;
+        display: -webkit-box; /* 使元素成为弹性盒子 */
+        -webkit-box-orient: vertical; /* 垂直排列子元素 */
+        -webkit-line-clamp: 2; /* 限制为两行 */
+        overflow: hidden; /* 隐藏超出的内容 */
+        text-overflow: ellipsis;
       }
     }
   }
