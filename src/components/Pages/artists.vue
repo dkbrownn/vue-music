@@ -75,7 +75,7 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
     color:rgba(0, 0, 0, 1);
     border-bottom-left-radius: 13Px;
     border-bottom-right-radius: 13Px;
-    font-size: 21Px;
+    font-size: 19Px;
     z-index:500;
   }
   .scroll {
@@ -94,7 +94,7 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
     color:rgba(0, 0, 0, 1);
     border-bottom-left-radius: 13Px;
     border-bottom-right-radius: 13Px;
-    font-size: 21Px;
+    font-size: 19Px;
   }
   .lists{
     display: flex;
@@ -127,7 +127,7 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
   text-align: center;
   padding: 13Px 0;
   li{
-    font-size: 7px;
+    font-size: 15Px;
     font-weight: 500;
     padding: 5Px 0;
   }

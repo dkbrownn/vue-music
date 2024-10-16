@@ -23,3 +23,16 @@ a {
 span, div {
   -webkit-font-smoothing: antialiased;
 }
+body, html {
+  font-family: Roboto, sans-serif;
+}
+a {
+  color: #7e8c8d;
+  -webkit-backface-visibility: hidden;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+}
