@@ -171,7 +171,7 @@ export const getDjTYpe  = () => {
 }
 //电台付费
 
-export const getDjPay  = () => {
+export const getBokeHour  = () => {
   return instance({
     url: '/dj/program/toplist/hours'
   })

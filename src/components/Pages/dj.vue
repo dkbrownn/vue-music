@@ -1,9 +1,10 @@
 <script setup lang='ts'>
-import { getDj, getDjTYpe, getDjPay } from '@/api/test'
+import { getDj, getDjTYpe, getBokeHour } from '@/api/test'
 const list = ref([])
 const types = ref([])
 let imageList = []
 const imgUrl = ref('')
+const banner = ref([])
 const getPicUrl = (index) => {
   console.log(imageList)
   imgUrl.value = imageList[index]
@@ -11,10 +12,19 @@ const getPicUrl = (index) => {
 const getDjData = async () => {
   const res = await getDj()
   const res1 = await getDjTYpe()
-  const res3 = await getDjPay()
-  console.log(res, res1, res3)
+  const res3 = await getBokeHour()
+  console.log(res, res1, res3.data.data.list)
   list.value = res.data.djRadios
   types.value = res1.data.data
+  banner.value = res3.data.data.list.map((item) => {
+    return {
+      img: item.program?.coverUrl,
+      desc: item.program?.description,
+      name: item.program?.name,
+      duration: item.program?.duration
+    }
+  })
+  console.log(banner)
   imageList= types.value.map((item) =>{
     if (item.radios?.[0].picUrl) {
       return item.radios?.[0].picUrl
@@ -57,7 +67,10 @@ const loading = computed(() => {
     </div>
   </Scroll>
 </div>
-<div class="banner"></div>
+<div class="banner" :style="{
+  backgroundImage: 'url(/public/stock-vector-retro-music-set-with-torn-put-paper-halftone-dotted-collage-elements-set-audio-reel-to-reel-tape-2487321123.jpg)'
+}">
+</div>
 <span>为你推荐的电台 ></span>
 <div class="dj-container">
   <Scroll class="scroll" :scrollX="true">
@@ -168,6 +181,8 @@ const loading = computed(() => {
     height: 150Px;
     background-color: rgba(180, 199, 227, 0.5);
     margin:21Px 0;
+    background-size: cover;
+    border-radius: 5Px;
   }
   .dj-container {
     .scroll {

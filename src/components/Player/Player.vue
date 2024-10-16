@@ -453,7 +453,7 @@ function onMiddleTouchEnd (e) {
               <img src="/public/R.png">
               <div class="pic" :style="{'background-image': `url(${state.playList?.[state?.currentIndex]?.al?.picUrl})`}"></div>
             </div>
-            <div class="icon">
+            <!-- <div class="icon">
               <div class="iconfont love">&#xe8c3;</div>
               <div class="iconfont download">
                 <img src="/public/icon_download.png">
@@ -463,7 +463,7 @@ function onMiddleTouchEnd (e) {
                 <img src="/public/icon_comment.png">
               </div>
               <div class="iconfont more"></div>
-          </div>
+          </div> -->
           </div>
         </div>
         <!-- <div :class="{'mode': mode}">{{modeNotice}}</div> -->

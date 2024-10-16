@@ -13,7 +13,9 @@
 
     <RouterView v-slot="{ Component}">
       <Transition appear name="slideSelf">
-        <component :is="Component"/>
+        <KeepAlive>
+          <component :is="Component"/>
+        </KeepAlive>
       </Transition>
     </RouterView>
 

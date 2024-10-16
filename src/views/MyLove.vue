@@ -133,7 +133,7 @@ watch(scrollY, (newY) => {
       padding: 6Px;
       display: flex;
       align-items: center;
-      border-bottom: 1Px solid rgb(185, 185, 185,.5);
+      // border-bottom: 1Px solid rgb(185, 185, 185,.5);
       span{
         font-size: 25Px;
         padding: 9Px;
