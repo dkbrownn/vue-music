@@ -156,21 +156,6 @@ watch(scrollY, (newY) => {
           font-size: 13Px;
           padding-top:7Px;
           color:rgba(0,0,0,.7);
-          .fee {
-              font-size: 10Px;
-              padding: 0 2.5Px;
-              border-radius: 5Px;
-              border:1Px solid $color-theme;
-              color:$color-theme;
-          }
-        }
-        .award {
-          display: inline-block;
-          font-size: 12Px;
-          line-height: 17Px;
-          color: rgb(234, 88, 12);
-          @include no-wrap();
-          background-color: rgb(255 237 213);
         }
       }
       .mv{

@@ -169,14 +169,6 @@ watch(scrollY, (newY) => {
               color:$color-theme;
           }
         }
-        .award {
-          display: inline-block;
-          font-size: 12Px;
-          line-height: 17Px;
-          color: rgb(234, 88, 12);
-          @include no-wrap();
-          background-color: rgb(255 237 213);
-        }
       }
       .mv{
         margin-left: auto;

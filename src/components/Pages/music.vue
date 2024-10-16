@@ -166,8 +166,10 @@ const conversionNumber = (number) => {
         }
       }
       .text{
-        width: 95PX;
-        font-size: 13Px;
+        width: 111PX;
+        height: 100%;
+        line-height: 25Px;
+        font-size: 15Px;
         padding-top: 6Px;
         white-space: wrap;
         display: -webkit-box; /* 使元素成为弹性盒子 */

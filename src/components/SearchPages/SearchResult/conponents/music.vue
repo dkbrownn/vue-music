@@ -105,7 +105,7 @@ const result = inject('searchResult-song')
         -webkit-box-orient: vertical;
       }
       .ar-info{
-        font-size: 13Px;
+        font-size: 15Px;
         padding-top:3Px;
         color:rgba(0,0,0,.7);
       }
