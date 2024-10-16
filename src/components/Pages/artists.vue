@@ -37,7 +37,7 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
 
 <template>
   <div class="container" v-loading:[loadingText]="loading" ref="height">
-    <div class="fix-key" :style="{opacity: show}">{{ fixedTitle }}</div>
+    <!-- <div class="fix-key" :style="{opacity: show}">{{ fixedTitle }}</div> -->
     <Scroll class="scroll" :probe-type="3" @scroll="onScroll" ref="scrollRef">
       <div ref="groupRef">
         <div class="A-area" v-for="(item, key, index) in singerList">
@@ -89,7 +89,7 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
 }
 .A-area{
   .key{
-    background-color: rgb(203 213 225);
+    //background-color: rgb(203 213 225);
     padding:2px 13Px;
     color:rgba(0, 0, 0, 1);
     border-bottom-left-radius: 13Px;
@@ -110,7 +110,7 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
       margin-left: 15Px;
       line-height: 55Px;
       color:rgb(0, 0, 0);
-      border-bottom: 1Px solid rgb(73, 71, 71, .3);
+      // border-bottom: 1Px solid rgb(73, 71, 71, .3);
       font-size: 7.7px;
     }
   }
@@ -121,7 +121,8 @@ const { shortcutList, onTouchStart, scrollRef, onTouchMove, } = useShortcut(sing
   top: 50%;
   transform: translateY(-50%);
   width: 21Px;
-  background-color: rgb(203 213 225);
+ // background-color: rgb(203 213 225);
+ background-color:rgba(255,255,255);
   color:rgba(0,0,0,.5);
   border-radius: 6Px;
   text-align: center;

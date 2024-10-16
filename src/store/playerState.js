@@ -24,21 +24,56 @@ export const usePlayStateStore = defineStore('playState', () => {
   }
 
   //默认播放
-   const selectPlay = (list, index) => {
+   const selectPlay = (list, index, place = 0) => {
     state.sequenceList = list
     state.playList = list
-    state.playing = true
     state.playMode = PLAY_MODE.sequence
     state.currentIndex = index
     state.fullScreen = true
+    if (place === 1) {
+      state.fullScreen = false
+    }
   }
   //随机播放
-  const randomPlay = (list, index) => {
+  const randomPlay = (list, index, place = 0) => {
     state.playList = list
     state.playMode = PLAY_MODE.random
     state.currentIndex = index
     state.fullScreen = true
+    if (place === 1) {
+      state.fullScreen = false
+    }
   }
+  // 单曲循环
+  const onlyPlay = (list, index, place = 0) => {
+    state.playList = list
+    state.playMode = PLAY_MODE.loop
+    state.currentIndex = index
+    state.fullScreen = true
+    if (place === 1) {
+      state.fullScreen = false
+    }
+  }
+
+  //删除播放列表某一歌曲
+  const deleteSong = (song, index) => {
+    // if (index === state.currentIndex) {
+    //   currentIndex++
+    // }
+    // else {
+      
+    // }
+    state.playList.splice(index, 1)
+    if (state.playMode === 0 || state.playMode === 1) {
+      state.sequenceList.splice(index, 1)
+    } else {
+      const i = state.sequenceList.findIndex((item) => {
+        return item.id === song.id
+      })
+      index === -1 ? '没找到' : state.sequenceList.splice(i, 1)
+    }
+  }
+
   //当前播放歌曲
   const currentSong = () => {
     return state.playList?.[state.currentIndex] || {}
@@ -73,5 +108,5 @@ export const usePlayStateStore = defineStore('playState', () => {
     save('favariteList', state.favariteList)
     return 0
   }
-  return { state, currentSong, selectPlay, changeTest, goBack, randomPlay, pushToPlayList, pushToFavarite }
+  return { state, currentSong, selectPlay, changeTest, goBack, randomPlay, pushToPlayList, pushToFavarite, onlyPlay, deleteSong, pushAllToPlayList }
 })

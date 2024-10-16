@@ -1,5 +1,6 @@
 <script setup>
 import { usePlayStateStore } from '@/store/playerState'
+import useMode from '../Player/use-mode';
 const store = usePlayStateStore()
 const { state } = store
 const emit = defineEmits(['change'])
@@ -11,17 +12,29 @@ const pushToFavarite = (song) => {
   const res = store.pushToFavarite(song)
   console.log(res)
 }
-const deleteFromPlayList = (i) => {
-  const index = state.playList.findIndex((song) => {
-    return song.id === i.di
-  })
-  state.playList.splice(index,1)
-}
+// const deleteFromPlayList = (i) => {
+//   const index = state.playList.findIndex((song) => {
+//     return song.id === i.id
+//   })
+//   state.playList.splice(index,1)
+// }
 defineProps({
   showList: {
     type: Object,
     default:{show: false, List: [] ,type: 0 }
   }
+})
+const { handleMode } = useMode(1)
+
+const { deleteSong } = store
+
+const deleteAll = () => {
+  store.state.playList = []
+  store.state.playing = false
+}
+
+const currentSong = computed(() => {
+  return store.currentSong()
 })
 </script>
 
@@ -34,22 +47,35 @@ defineProps({
     <transition name="slide" v-show="showList.show">
       <div class="container-toast">
         <div class="circle"></div>
-        <div class="list-info">当前播放</div>
+        <div class="list-info" v-show="showList.type === 0">当前播放</div>
+         <div class="list-info" v-show="showList.type === 1">当前歌单</div>
         <div class="top-info">
-            <span class="iconfont mode" v-show="true">&#xe61c; 列表循环</span>
-            <span class="iconfont mode" v-show="false">&#xe6a3; 单曲循环</span>
-            <span class="iconfont mode" v-show="false">&#xe601; 随机播放</span>
+            <span class="iconfont mode" v-show="state.playMode === 0" @click="handleMode">&#xe61c; 列表循环</span>
+            <span class="iconfont mode" v-show="state.playMode === 1"
+            @click="handleMode">&#xe6a3; 单曲循环</span>
+            <span class="iconfont mode" v-show="state.playMode === 2"
+            @click="handleMode">&#xe601; 随机播放</span>
             <span class="iconfont collect" v-show="showList.type === 0">&#xe74e;</span>
-            <span class="iconfont add" v-show="showList.type === 1">&#xe620;</span>
-            <span class="iconfont delete" v-show="showList.type === 0">&#xe7a6;</span>
+            <span class="iconfont add" v-show="showList.type === 1"
+            @click="store.pushAllToPlayList(showList)"
+            >&#xe620;</span>
+            <span class="iconfont delete" v-show="showList.type === 0"
+            @click="deleteAll">&#xe7a6;</span>
         </div>
-        <div class="func">
-          <div class="item" v-for="i in showList.List">
-            <span class="info">{{ i.name }}-{{ i.ar?.[0].name }}</span>
-            <span class="iconfont add" @click="pushToPlayList(i)" v-show="showList.type === 1">&#xe620;</span>
-            <span class="iconfont delete" @click="deleteFromPlayList(i)" v-show="showList.type === 0">&#xe653;</span>
+        <Scroll class="func">
+          <div>
+            <div class="item" v-for="(i, index) in showList.List"
+            :class="{
+              playing: currentSong.id === i.id
+            }"
+            >
+              <span class="fee"  v-show="i.fee === 1">VIP</span>
+              <span class="info">{{ i.name }}-<span>{{ i.ar?.[0].name }}</span></span>
+              <div class="iconfont add" @click="pushToPlayList(i)" v-show="showList.type === 1">&#xe620;</div>
+              <div class="iconfont delete" @click="deleteSong(i, index)" v-show="showList.type === 0">&#xe653;</div>
+            </div>
           </div>
-        </div>
+        </Scroll>
         <div class="close"  @click="emit('change')">关闭</div>
       </div>
     </transition>
@@ -109,10 +135,12 @@ defineProps({
     display: flex;
     align-items: center;
     padding: 5Px 0 9Px 0 ;
-    margin-top: 10Px;
     .collect {
       margin-left: auto;
       font-size: 21Px;
+    }
+    .add {
+      margin-left: auto;
     }
     .delete, .add {
       display: inline-block;
@@ -125,7 +153,7 @@ defineProps({
     font-size: 15Px;
     font-weight: 400;
     font-size: 25Px;
-    overflow-y:auto;
+    overflow:hidden;
     height: 100%;
     .item{
       display: flex;
@@ -134,6 +162,20 @@ defineProps({
       .info {
         font-size: 15Px;
         font-weight:Regular 400;
+        span {
+          font-size: 14Px;
+          margin-left: 3Px;
+          color:rgba(0,0,0,.7)
+        }
+      }
+      .fee {
+        font-size: 10Px;
+        padding: 0 2.5Px;
+        border-radius: 5Px;
+        border:1Px solid $color-theme;
+        color:$color-theme;
+        vertical-align: middle;
+        margin-right:3Px;
       }
       .delete, .add {
         line-height: 25Px;
@@ -148,6 +190,13 @@ defineProps({
   .close{
     text-align: center;
     padding:9Px 0 0 0;
+  }
+}
+
+.playing {
+  color:rgb(250, 113, 113);
+  span {
+    color:rgb(250, 113, 113) !important;
   }
 }
 .slide-enter-active {

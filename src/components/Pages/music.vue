@@ -117,7 +117,7 @@ const conversionNumber = (number) => {
     }
   }
   .title{
-    height: 50Px;
+    height: 40Px;
     padding: 5Px 15Px;
     font-size: 19Px;
     display: flex;
@@ -153,8 +153,8 @@ const conversionNumber = (number) => {
       color:#000;
       padding:5Px 5Px;
       .block{
-        height: 95PX;
-        width: 95PX;
+        height: 85PX;
+        width: 85PX;
         background-color: $color-highlight-background;
         position: relative;
         border-radius: 9%;
@@ -166,10 +166,10 @@ const conversionNumber = (number) => {
         }
       }
       .text{
-        width: 111PX;
+        width: 85PX;
         height: 100%;
-        line-height: 25Px;
-        font-size: 15Px;
+        line-height: 15Px;
+        font-size: 13Px;
         padding-top: 6Px;
         white-space: wrap;
         display: -webkit-box; /* 使元素成为弹性盒子 */

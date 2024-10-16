@@ -13,10 +13,9 @@
 .container{
   position: absolute;
   top: 0;
-  bottom: 59Px;
+  bottom: 50Px;
   left: 0;
   right: 0;
-  overflow-y: auto;
   padding-bottom: 15Px;
 }
 </style>

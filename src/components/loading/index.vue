@@ -24,12 +24,37 @@
 </script>
 
 <style lang="scss" scoped>
+  // .loading {
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 50%;
+  //   transform: translate3d(-50%, -50%, 0);
+  //   .loading-content {
+  //     text-align: center;
+  //     img {
+  //       color:#000;
+  //     }
+  //     .desc {
+  //       line-height: 20px;
+  //       font-size: 25Px;
+  //       color: #bdbcbc;
+  //     }
+  //   }
+  // }
+
   .loading {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    z-index:1000;
     .loading-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
       text-align: center;
       img {
         color:#000;

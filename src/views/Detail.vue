@@ -54,11 +54,20 @@ const onClick = (list) => {
   showList.List = list
 }
 
+const currentSong = computed(() => {
+  return store.currentSong()
+})
+
+const caculate = (num) => {
+ return num > 10000 ? num % 10000 + '万' : num
+}
 </script>
 
 <template>
   <div class="wrapper" v-loading="loading">
-    <div class="background"></div>
+    <div class="background" :style="{
+      backgroundImage: `url(${list.coverImgUrl})`
+    }"></div>
     <div class="top-bar">
       <span class="iconfont back" @click="$router.back">&#xe612;</span>
       <span class="song-text">歌单</span>
@@ -91,10 +100,10 @@ const onClick = (list) => {
       <div class="desc">{{ list.description }}</div>
       <div class="iconfont icon">
         <div> <span class="iconfont">&#xe633;</span>
-          {{ list.shareCount }}
+          {{ caculate(list.shareCount) }}
         </div>
-        <div> <span class="iconfont">&#xe611;</span>{{ list.commentCount }}</div>
-        <div class="red"> <span class="iconfont">&#xe74e;</span>{{ list.subscribedCount }}</div>
+        <div> <span class="iconfont">&#xe611;</span>{{ caculate(list.commentCount) }}</div>
+        <div class="red"> <span class="iconfont">&#xe74e;</span>{{ caculate(list.subscribedCount) }}</div>
       </div>
       <div class="song-music">
         <div class="song-music-bar" ref="songBar">
@@ -102,7 +111,9 @@ const onClick = (list) => {
           <span class="text" @click="playSong(list.tracks, 0)">播放全部</span>
           <span class="list iconfont" @click="onClick(list.tracks)">&#xe62d;</span>
         </div>
-        <div class="song-music-content" v-for="(item, index) in list.tracks" @click="playSong(list.tracks, index)">
+        <div class="song-music-content" v-for="(item, index) in list.tracks" @click="playSong(list.tracks, index)"
+        :class="{playing: currentSong.id === item.id}"
+        >
           <span class="iconfont index" @click.stop="store.randomPlay(list.tracks)" >{{index + 1}}</span>
           <!-- @click.stop="store.randomPlay(list.tracks)" -->
           <div class="text">
@@ -113,7 +124,7 @@ const onClick = (list) => {
                 {{item.ar[0].name}} {{item.al.name}}
               </span>
             </div>
-            <div class="award" v-show="item.awardName">{{ item.awardName }}</div>
+            <div class="award" v-show="item.awardName" >{{ item.awardName }}</div>
           </div>
           <span class="iconfont mv">&#xe645;</span>
           <span class="iconfont more" @click.stop="addToPlayList(
@@ -145,6 +156,7 @@ const onClick = (list) => {
     height: 50%;
     left: 0;
     right: 0;
+    filter: blur(50Px);
   }
   .song-music-fix-bar{
     position: relative;
@@ -272,8 +284,8 @@ const onClick = (list) => {
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      line-height: 17Px;
-      font-size: 15Px;
+      line-height: 15Px;
+      font-size: 14Px;
     }
     .icon {
       display: flex;
@@ -329,7 +341,7 @@ const onClick = (list) => {
       &-content{
         display: flex;
         align-items: center;
-        border-bottom: 1Px solid rgb(185, 185, 185,.5);
+        //border-bottom: 1Px solid rgb(185, 185, 185,.5);
         padding: 5Px 0;
         span{
           font-size: 19Px;
@@ -352,6 +364,7 @@ const onClick = (list) => {
             -webkit-box-orient: vertical;
           }
           .ar-info{
+            width: 200Px;
             font-size: 13Px;
             padding-top:7Px;
             color:rgba(0,0,0,.7);
@@ -360,11 +373,10 @@ const onClick = (list) => {
             word-break: break-all;
             white-space: nowrap;
             padding-bottom: 2Px;
-            
             span {
               font-size: 13Px;
               color:rgba(0,0,0,.5);
-              padding:0 0 0 5Px;
+              padding:0 0 0 0;
               vertical-align: middle;
             }
             .fee {
@@ -374,15 +386,16 @@ const onClick = (list) => {
               border:1Px solid $color-theme;
               color:$color-theme;
               vertical-align: middle;
+              margin-right:3Px;
             }
+          }
             .award {
-            width: 100%;
+            width: 200Px;
             font-size: 12Px;
-            line-height: 1Px;
+            line-height: 19Px;
             color: rgb(234, 88, 12);
             @include no-wrap();
             background-color: rgb(255 237 213);
-          }
           }
         }
         .mv{
@@ -399,6 +412,7 @@ const onClick = (list) => {
     }
   }
 }
+
 @keyframes fixBar {
     0% {
       opacity: 0;

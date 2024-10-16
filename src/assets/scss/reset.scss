@@ -1,0 +1,6 @@
+.slideSelf-enter-active, .slideSelf-leave-active {
+  transition: all .5s;
+}
+.slideSelf-enter-from, .slideSelf-leave-to {
+  transform: translateX(100%);
+}

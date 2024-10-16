@@ -36,3 +36,9 @@ body {
   -webkit-text-size-adjust: none;
   -webkit-tap-highlight-color: transparent;
 }
+.playing {
+  span,
+  div {
+    color: rgb(250, 113, 113) !important;
+  }
+}

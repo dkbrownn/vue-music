@@ -145,7 +145,7 @@ watch(scrollY, (newY) => {
       }
       .text{
         padding: 0Px 1Px;
-        color:rgba(0,0,0,.9);
+        color: rgba(0,0,0,.9);
         .song-name{
           font-size: 15.5Px;
           overflow: hidden;
@@ -168,6 +168,14 @@ watch(scrollY, (newY) => {
               border:1Px solid $color-theme;
               color:$color-theme;
           }
+        }
+        .award {
+          display: inline-block;
+          font-size: 12Px;
+          line-height: 17Px;
+          color: rgb(234, 88, 12);
+          @include no-wrap();
+          background-color: rgb(255 237 213);
         }
       }
       .mv{

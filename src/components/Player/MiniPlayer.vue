@@ -29,8 +29,8 @@ const showList = reactive({
   List: [],
   type: 0
 })
-watch(() =>store.state.playList,(newVal) => {
-  console.log('watch')
+watch(() =>store.state.playList,(newVal, oldVal) => {
+  console.log('watch', newVal, oldVal)
   showList.List = newVal
 },{deep:true, immediate: true })
 </script>

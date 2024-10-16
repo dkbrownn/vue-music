@@ -11,7 +11,11 @@
     <div class="iconfont voice" @click="$router.push('/search')">&#xe752;</div>
   </div>
 
-    <RouterView/>
+    <RouterView v-slot="{ Component}">
+      <Transition appear name="slideSelf">
+        <component :is="Component"/>
+      </Transition>
+    </RouterView>
 
 </template>
 
