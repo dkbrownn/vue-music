@@ -11,27 +11,37 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="top">
-  <span class="back iconfont" @click="$router.push('/find')">&#xe612;</span>
-  <span class="name">歌单广场</span>
-</div>
-<Scroll class="scroll">
-  <div>
-    <div class="div">你的推荐歌单</div>
-    <div class="block-container">
-      <SongBlock :list="recommandList" class="item"/>
+  <div class="wrapper">
+    <div class="top">
+      <span class="back iconfont" @click="$router.push('/find')">&#xe612;</span>
+      <span class="name">歌单广场</span>
     </div>
+    <Scroll class="scroll">
+      <div>
+        <div class="div">你的推荐歌单</div>
+        <div class="block-wrapper">
+          <SongBlock :list="recommandList" class="item"/>
+        </div>
+      </div>
+    </Scroll>
   </div>
-</Scroll>
 </template>
 
 <style scoped lang='scss'>
+.wrapper {
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .top {
-  height: 50Px;
+  height: 30Px;
   width: 100%;
   background-color: #fff;
   position: relative;
   z-index:1;
+  padding: 6Px 15Px;
   .back {
     font-size: 21Px;
     vertical-align: middle;
@@ -54,24 +64,21 @@ onMounted(() => {
     font-weight: 600;
   }
 }
-.block-container {
+.block-wrapper {
   display: grid;
-  // grid-template-columns: 1fr 1fr 1fr;
-  // grid-template-rows: 1fr 1fr 1fr;
   row-gap: 3Px;
   column-gap: 3Px;
-  .item {
-    place-self: center;
-  }
 }
-@media screen and (max-width: 500Px) {
-  .block-container {
+@media screen and (max-width: 450Px) {
+  .block-wrapper {
     grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: min-content;
   }
 }
-@media screen and (min-width: 500Px) {
-  .block-container {
+@media screen and (min-width: 450Px) {
+  .block-wrapper {
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-auto-rows: min-content;
   }
 }
 </style>

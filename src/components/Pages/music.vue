@@ -62,8 +62,8 @@ const loadingText = '正在拼命加载中'
       <span>推荐歌单</span>
       <div class="right" @click="$router.push('/musiclists')">查看更多</div>
     </div>
-    <div class="block-container">
-      <SongBlock :list="recommandList.slice(0,16)" class="item"/>
+    <div class="block-wrapper">
+      <SongBlock :list="recommandList.slice(0,16)" />
     </div>
     
   </div>
@@ -120,23 +120,20 @@ const loadingText = '正在拼命加载中'
   border-radius: 3px;
   overflow: hidden;
 }
-.block-container {
+.block-wrapper {
   display: grid;
   // grid-template-columns: 1fr 1fr 1fr;
   // grid-template-rows: 1fr 1fr 1fr;
   row-gap: 3Px;
   column-gap: 3Px;
-  .item {
-    place-self: center;
-  }
 }
 @media screen and (max-width: 500Px) {
-  .block-container {
+  .block-wrapper {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 @media screen and (min-width: 500Px) {
-  .block-container {
+  .block-wrapper {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }

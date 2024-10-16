@@ -29,18 +29,15 @@ const conversionNumber = (number) => {
   vertical-align:top;
   color:#000;
   padding:5Px 5Px;
-  //place-self: center;
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  place-self: center;
   .block{
-    height:80%;
-    width:80%;
+    width:91%;
+    aspect-ratio: 1 / 1;
     margin:0 auto;
     background-color: $color-highlight-background;
     position: relative;
     border-radius: 9%;
     background-size:cover;
-    /* background-image: url("https://p1.music.126.net/wdKjMvO2A7XTbti5wDqtpg==/109951166784247177.jpg"); */
     .listen{
       font-size: 5px;
       padding: 7Px 0 0 7Px;
@@ -48,7 +45,7 @@ const conversionNumber = (number) => {
     }
   }
   .text{
-    width: 80%;
+    width: 91%;
     font-size: 6.5px;
     padding-top: 6Px;
     overflow: hidden;
