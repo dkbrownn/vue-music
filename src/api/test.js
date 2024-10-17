@@ -134,11 +134,10 @@ export const getSuggestion  = (keywords, type = 'mobile') => {
 //获取歌曲url
 export const getSongUrl  = (id) => {
   return instance({
-    url: '/song/url/v1',
+    url: '/song/url',
     params: {
       id,
-      realIP:'116.25.146.177',
-      level: "lossless"
+      realIP:'116.25.146.177'
     }
   })
 }

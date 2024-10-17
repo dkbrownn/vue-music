@@ -55,7 +55,7 @@ const result = inject('searchResult-song')
 <style scoped lang='scss'>
 .container{
   position: absolute;
-  top:50Px;
+  top:39Px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -88,7 +88,7 @@ const result = inject('searchResult-song')
     padding: 6Px;
     display: flex;
     align-items: center;
-    border-bottom: 1Px solid rgba(0,0,0,.1);
+   // border-bottom: 1Px solid rgba(0,0,0,.1);
     span{
       font-size: 19Px;
       padding: 9Px;

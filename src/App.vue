@@ -1,13 +1,13 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import Player  from '@/components/Player/Player.vue'
+import Response from './views/Response.vue'
 </script>
 <template>
   <div class="wrapper">
     <RouterView/>
     <Player/>
   </div>
-  
 </template>
 
 <style scoped lang="scss">

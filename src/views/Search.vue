@@ -185,8 +185,8 @@ provide('inputVal', inputVal)
   
 }
 .header {
-  padding: 0 9Px ;
-  margin: 5Px 0;
+  padding: 5Px 9Px 15Px 9Px;
+  // margin: 5Px 0;
   display: flex;
   align-items: center;
   justify-content:space-around;
@@ -227,11 +227,11 @@ provide('inputVal', inputVal)
 }
 .container{
   position: absolute;
-  top:50Px;
+  top:55Px;
   left: 0;
   right: 0;
   bottom: 0;
-  padding:15Px 5Px 0 5Px;
+  padding: 0 5Px 0 5Px;
   background-color: rgb(236, 243, 250);
   .scroll {
     height: 100%;

@@ -51,20 +51,30 @@ const addToPlayList = (obj) => {
 //   showList.show = true
 //   showList.List = list
 // }
+const scrollY = ref(0)
+const onScroll = (pos) => {
+  scrollY.value = -pos.y
+  console.log(pos.y)
+}
 </script>
 
 <template>
   <div class="wrapper" v-loading="loading">
-    <div class="top-bar">
+    <div class="top-bar"
+    :class="{
+      'top-bar-slide': scrollY > 600
+    }"
+    >
       <span class="iconfont back" @click="$router.back">&#xe612;</span>
+      <span v-show="scrollY > 600"> 陈奕迅 </span>
       <span class="iconfont dot">&#xe747;</span>
     </div>
     <div class="backgroud-img" :style="{'background-image': `url(http://p2.music.126.net/1qr8a9G8pWEMoruLJaBv8A==/109951169014564421.jpg)`}"></div>
-      <Scroll class="song" ref="el">
-        <div>
+      <Scroll class="song" ref="el" :probe-type="3" @scroll="onScroll">
+        <div class="song-scroll-wrapper">
           <div class="song-info">
-            <div class="song-info-cname">Beyond</div>
-            <div class="song-info-yname">超越</div>
+            <div class="song-info-cname">陈奕迅</div>
+            <div class="song-info-yname">Clare Evers</div>
             <div class="song-info-fins">{{singerAllInfo.fins}}粉丝</div>
             <div class="song-info-title"><span v-for="value in singerAllInfo.info">{{ value.expertIdentiyName
     }}、</span></div>
@@ -111,7 +121,8 @@ const addToPlayList = (obj) => {
     top:0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 500;
+    transition: all .3s;
     .iconfont{
         font-size:23Px;
         padding: 0 13Px;
@@ -123,9 +134,20 @@ const addToPlayList = (obj) => {
       color:#fff;
     }
     .dot{
+      margin-left:auto;
       font-size:29Px;
       color:#fff;
     }
+  }
+  .top-bar-slide {
+    background-color:#fff;
+    border-bottom-left-radius: 5Px;
+    border-bottom-right-radius: 5Px;
+    opacity:1;
+    .back ,.dot {
+      color: #000 !important;
+    }
+    
   }
   .backgroud-img{
     padding-top: 100%;
@@ -142,8 +164,11 @@ const addToPlayList = (obj) => {
     left:0;
     right:0;
     overflow: hidden;
-    z-index: 100;
+    z-index: 1;
     padding-top:100%;
+    &-scroll-wrapper {
+      padding-top:80%;
+    }
     &-info{
       display: flex;
       flex-direction: column;
@@ -151,7 +176,7 @@ const addToPlayList = (obj) => {
       align-items: center;
       justify-content:space-around;
       background-color: #fff;
-      margin:325Px 25Px 25Px 25Px;
+      margin:0Px 25Px 25Px 25Px;
       padding:15Px 0;
       border-radius: 25Px;
       box-shadow: 3Px 9Px 9Px 3Px rgba(197, 195, 195, .3);
@@ -176,7 +201,7 @@ const addToPlayList = (obj) => {
         height: 61Px;
         display: flex;
         align-items: center;
-        z-index: 1;
+        //z-index: 1;
         position: relative;
         margin-left: 9Px;
         border-bottom: 1.5Px solid rgb(250 250 250);
@@ -193,7 +218,7 @@ const addToPlayList = (obj) => {
       &-content{
         display: flex;
         align-items: center;
-        border-bottom: 1.5Px solid rgb(237, 237, 239);
+        //border-bottom: 1.5Px solid rgb(237, 237, 239);
         margin-left: 9Px;
         padding: 6Px 0;
         span{

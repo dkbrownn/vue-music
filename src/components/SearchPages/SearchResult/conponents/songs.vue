@@ -22,7 +22,7 @@ const list = inject('searchResult-SongList')
 <style scoped lang='scss'>
 .container{
   position: absolute;
-  top:50Px;
+  top:39Px;
   bottom: 0;
   left: 0;
   right: 0;

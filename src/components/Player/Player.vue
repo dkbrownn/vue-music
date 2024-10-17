@@ -10,6 +10,7 @@ import { Base64 } from 'js-base64'
 import Lyric from 'lyric-parser'
 import { debounce } from 'throttle-debounce'
 import useMode from './use-mode.js';
+import useLyric from './use-lyric.js';
 const songReady = ref(false) //判断是否音频加载了
 const store = usePlayStateStore()
 const { state } = (store)
@@ -18,6 +19,8 @@ const currentSong = computed(() => {
  console.log(res)
   return res
 })
+const width = ref(0)
+const currentTime = ref(0)
 // const a = reactive({list:[1,2,3], index: 0})
 // const a = [1,2,3]
 // const index = ref(0)
@@ -29,27 +32,27 @@ const currentSong = computed(() => {
 //   console.log('你的猜想是正确的')
 // })
 // index.value = 1
-const lyricTime = ref(0)
-const currentLyric = ref(null)
-const currentLineNum = ref(-1)
 
 const fullScreen = computed(() => store.state.fullScreen)
 const audioRef = ref(null)
 const duration = ref('00:00')
 let durationSeconds = 0
+const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric(currentTime, currentSong, songReady)
 //歌曲url
 watch(currentSong, async (newSong) => {
   // if (!songReady.value) {
   //   return
   // }
+  currentTime.value = 0
+  duration.value = '00:00'
+  songReady.value = false
   console.log(currentSong, newSong)
   if (!newSong.id){
     // console.log('return')
     console.log('newSong.id')
     return
   }
-  currentLyric.value = null
-  currentLineNum.value = -1
+  //currentLineNum.value = -1
   const index = state.haveListen.findIndex((song) => {
     return song.id === newSong.id
   })
@@ -64,8 +67,11 @@ watch(currentSong, async (newSong) => {
     audioEl.src = res.data.data[0].url
     console.log('play')
     state.playing = true
+    console.log('此处播放设置为true')
+    songReady.value = true
     audioEl.play()
     durationSeconds = res.data.data[0].time
+    console.log(audioEl, durationSeconds)
     duration.value = conversionTime( durationSeconds / 1000)
   }
   // || !newSong.url
@@ -75,14 +81,14 @@ const controlPlay = () => {
   state.playing ?  pause() : play()
   function play () {
     state.playing = true
-    lyricTime.value = audioRef.value.currentTime
+    //lyricTime.value = audioRef.value.currentTime
     audioRef.value.play()
-    playLyric()
+    //playLyric()
   }
   function pause () {
     audioRef.value.pause()
     state.playing = false
-    stopLyric()
+    //stopLyric()
   }
   console.log(audioRef.value.paused)
  // stopLyric()
@@ -94,16 +100,16 @@ const playIcon = computed(() => {
 const lastSong = () => {
   state.currentIndex >= 1 ? state.currentIndex -= 1 :  state.currentIndex = state.playList.length -1
   audioRef.value.pause()
-  stopLyric()
-  currentLyric.value = null
-  currentLineNum.value = -1
+  // stopLyric()
+  // currentLyric.value = null
+  // currentLineNum.value = -1
 }
 const nextSong = () => {
-  stopLyric()
+  //stopLyric()
   state.currentIndex <= state.playList.length -2 ? state.currentIndex += 1 : state.currentIndex = 0
   audioRef.value.pause()
-  currentLyric.value = null
-  currentLineNum.value = -1
+  // currentLyric.value = null
+  // currentLineNum.value = -1
 }
 
 // const isLove = computed(() => {
@@ -164,8 +170,7 @@ const handleLove = (id) => {
 const { mode, modeNotice, handleMode } = useMode()
 const error = () => {
 }
-const width = ref(0)
-const currentTime = ref('00:00')
+
 //格式化
 function conversionTime  (time)  {
   const timeSeconds = Math.floor(time) 
@@ -191,12 +196,12 @@ const isProgressing = ref(false) //处理拖动时原生html事件和自定义�
 const updataTime = (e) => {
   if (!isProgressing.value) {
     console.log(e.target.currentTime)
-    lyricTime.value = e.target.currentTime
+    //lyricTime.value = e.target.currentTime
     const percent = (e.target.currentTime / e.target.duration)*100
   // console.log(percent,e.target.currentTime)
     width.value = percent
   // console.log(conversionTime(e.target.currentTime))
-    currentTime.value = conversionTime(e.target.currentTime)
+    currentTime.value = e.target.currentTime
   }
 }
 // const ready = () => {
@@ -209,8 +214,8 @@ const endAudio = () => {
   if (state.playMode === 0 || state.playMode === 2) {
     state.currentIndex++
   } else {
-    state.playing = true
-    state.currentIndex = state.currentIndex
+    // state.playing = true
+    // //state.currentIndex = state.currentIndex
     audioRef.value.play() 
   }
 }
@@ -247,8 +252,8 @@ const onTouchEnd = () => {
 // 触发音频的时间显示调整
 function onProgressChanging (progress) {
   isProgressing.value = true
-  currentTime.value = conversionTime(audioRef.value.duration * progress)
-  lyricTime.value = audioRef.value.duration * progress
+  currentTime.value = audioRef.value.duration * progress
+  // lyricTime.value = audioRef.value.duration * progress
   playLyric()
   stopLyric()
 }
@@ -256,7 +261,7 @@ function onProgressChanging (progress) {
 function onProgressChanged (progress) {
   console.log(audioRef.value.duration)
   audioRef.value.currentTime = audioRef.value.duration * progress
-  lyricTime.value =  audioRef.value.currentTime
+  // lyricTime.value =  audioRef.value.currentTime
   console.log(audioRef.value.currentTime)
   isProgressing.value = false
   if (!state.playing) {
@@ -277,8 +282,9 @@ const onClick = (e) => {
 }
 // 转盘的暂停与播放样式 以及icon与音频播放一一对应 歌词播放暂停
 const bgm = ref(null)
- const turntable = ref(null) 
+const turntable = ref(null) 
 watch(() => state.playing, () => {
+  console.log('turntable')
   if (!state.playing) {
     turntable.value.style.animationPlayState = 'paused'
     audioRef.value.pause()
@@ -287,7 +293,7 @@ watch(() => state.playing, () => {
   } else {
       turntable.value.style.animationPlayState = ''
       audioRef.value.play()
-      lyricTime.value = audioRef.value.currentTime
+      // lyricTime.value = audioRef.value.currentTime
       playLyric()
   }
 
@@ -299,65 +305,7 @@ watch(() => state.playing, () => {
 //   return res
 // })
 
-const  lyricScrollRef =ref(null) 
-const lyricListRef = ref(null)
 
-function playLyric () {
-  const currentLyricVal = currentLyric.value
-  if (currentLyricVal) {
-    console.log('seek1', currentLyricVal)
-    console.log(lyricTime.value * 1000)
-    currentLyricVal.seek(lyricTime.value * 1000)
-  }
-   console.log('seek3', currentLyricVal)
-}
-function stopLyric() {
-    const currentLyricVal = currentLyric.value
-    console.log(currentLyricVal, currentLyric)
-    if (currentLyricVal) {
-      currentLyricVal.stop()
-    }
-}
-function handleLyric ({ lineNum, txt }) {
-  console.log('text',lineNum, txt)
-  console.log()
-  currentLineNum.value = lineNum 
-
-  const scrollComp = lyricScrollRef.value
-  const listEl = lyricListRef.value
-  if (lineNum > 5) {
-    const lineEl = listEl.children[lineNum - 5]
-    //scrollComp.scroll.scrollToElement(lineEl, 1000)
-  } else {
-      //scrollComp.scroll.scrollTo(0, 0, 1000)
-  }
-}
-watch(currentSong, async (newSong) => {
-  console.log(newSong)
-  stopLyric()
-  currentLyric.value = null
-  currentLineNum.value = -1
-  lyricTime.value = 0
-  if (newSong.lrc) {
-    console.log(newSong.lrc)
-    currentLyric.value = new Lyric(newSong.lrc.lyric, handleLyric)
-    console.log('lrc')
-    console.log(store.currentSong(),store.state.playList)
-    if (store.state.playing) {
-      playLyric()
-    }
-  } else {
-    const res = await getSongLyric(newSong.id)
-    console.log((res.data.lrc))
-    newSong.lrc = res.data.lrc
-    currentLyric.value = new Lyric( newSong.lrc.lyric, handleLyric)
-    console.log(currentLyric.value)
-    if (store.state.playing) {
-      playLyric()
-    }
-  }
-  // 使用侦听器副作用清理器，解决用户高频点击浪费请求影响性能
-})
 
 //控制主屏和歌词屏切换
 const currentShow = ref('first')
@@ -425,6 +373,18 @@ function onMiddleTouchEnd (e) {
   console.log(middleLeftStyle,middleRightStyle.value)
 }
 
+// function ready () {
+//   if (songReady.value) {
+//     return
+//   }
+//   songReady.value = true
+//   playLyric()
+// }
+
+//当audio被强迫关闭(待机...)
+const pause = () => {
+  playState.state.playing = false
+}
 </script>
 <template>
     <Transition name="player">
@@ -453,25 +413,24 @@ function onMiddleTouchEnd (e) {
               <img src="/public/R.png">
               <div class="pic" :style="{'background-image': `url(${state.playList?.[state?.currentIndex]?.al?.picUrl})`}"></div>
             </div>
-            <!-- <div class="icon">
-              <div class="iconfont love">&#xe8c3;</div>
-              <div class="iconfont download">
-                <img src="/public/icon_download.png">
-              </div>
-              <div class="iconfont turn-on"></div>
-              <div class="iconfont comment">
-                <img src="/public/icon_comment.png">
-              </div>
-              <div class="iconfont more"></div>
-          </div> -->
+            <div class="playing-lyric">{{ playingLyric }}</div>
           </div>
         </div>
         <!-- <div :class="{'mode': mode}">{{modeNotice}}</div> -->
-        <Scroll class="middle-lyric" :style="middleRightStyle">
-          <div class="lyric-wrapper" ref="lyricScrollRef">
-            <li v-for="(item, index) in currentLyric?.lines" :class="{
+         <!-- :class="{
               'currentLineNum': currentLineNum === index
-            }" ref="lyricListRef">{{ item.txt }}</li>
+
+              v-for="(item, index) in currentLyric?.lines" 
+              {{ item.txt }}
+            }"  -->
+        <Scroll class="middle-lyric" :style="middleRightStyle"
+        ref="lyricScrollRef"
+        >
+          <div class="lyric-wrapper" ref="lyricListRef">
+            <li v-for="(line, index) in currentLyric?.lines"
+            :key="line.num"
+            :class="{ 'currentLineNum': currentLineNum === index }"
+            >{{ line.txt }}</li>
           </div>
         </Scroll>
       </div>
@@ -479,7 +438,7 @@ function onMiddleTouchEnd (e) {
       <div class="bottom">
         <!--  -->
         <div class="progress">
-          <div  @click="onClick">{{currentTime}}</div>
+          <div  @click="onClick">{{conversionTime(currentTime)}}</div>
           <div class="progress-bar" ref="progressAll" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd" @click="onClick">
             <div class="progress-bar-cur" ref="progressed" :style="{width: `${width}%`}">
               <div class="circle"></div>
@@ -507,7 +466,9 @@ function onMiddleTouchEnd (e) {
       </div>
     <!-- <div class="minplay">minplay</div> -->
      <!-- @canplay="ready" -->
-      <audio ref="audioRef" @error="error" @timeupdate="updataTime" @ended="endAudio"></audio>
+      <audio ref="audioRef" @error="error" @timeupdate="updataTime" @ended="endAudio"
+      @canplay="ready" @pause="pause"
+      ></audio>
     </div>
     </div>
   </Transition>
@@ -535,7 +496,7 @@ function onMiddleTouchEnd (e) {
     object-fit: cover;
     height: 100%;
     width: 100%;
-    filter: blur(79Px);
+    filter: blur(150Px);
   }
   
 
@@ -636,27 +597,15 @@ function onMiddleTouchEnd (e) {
           background-size: cover;
         }
       }
-      .icon {
-        position:absolute;
-        bottom:0;
-        display: flex;
-        align-items: center;
-        min-height:25Px;
-        width: 100%;
-        justify-content: space-around;
-          .love {
-            font-size: 30Px;
-            color:rgba(255,255,255,.8);
-          }
-          .download, .comment {
-            height: 30Px;
-            width: 30Px;
-            img {
-              height: inherit;
-              width: inherit;
-            }
-          }
-      }
+      .playing-lyric {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 15Px;
+          height: 25Px;
+          bottom: 0;
+          color: #ffffff80;
+        }
       &-lyric{
         height: 100%;
         width: 100%;
@@ -670,7 +619,7 @@ function onMiddleTouchEnd (e) {
           text-align: center;
         }
         li {
-          color:#ffffff80;;
+          color:#ffffff80;
           font-weight: 400;
           font-size: 19Px;
           line-height: 39Px;
