@@ -41,7 +41,7 @@ const router = createRouter({
       path:'/',
       name: 'home',
       component: HomePage,
-      redirect: '/find',
+      redirect: '/login',
       children: [
         {
           path: 'recommend',
