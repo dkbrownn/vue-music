@@ -135,7 +135,8 @@ const backToLogin = () => {
     position: absolute;
     top:50%;
     height: 150Px;
-    width:100%;
+    left: 0;
+    right: 0;
     //transform: translateY(100Px);
     //transition: all .5s;
     &-phone {
