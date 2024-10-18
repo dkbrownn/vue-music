@@ -1,5 +1,5 @@
 <script setup>
-// test
+// git测试
 const isCheck = ref('')
 const loginIcon = ref(false)
 const phoneNumber = ref('')
