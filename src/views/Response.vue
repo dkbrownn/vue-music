@@ -6,6 +6,9 @@ import { useErrorStore } from '@/store/Error';
 // setInterval(() => {
 //   store.errorMessage = Math.random()
 // },3000)
+const store = useErrorStore()
+console.log(store)
+watch()
 </script>
 
 <template>

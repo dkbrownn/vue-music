@@ -16,6 +16,7 @@ const MyHis = () => import('@/views/MyHis.vue')
 const MyLove = () => import('@/views/MyLove.vue')
 const MusicsList = () => import('@/views/MusicsList.vue')
 const NotFind = () => import('@/views/404.vue')
+import Login from '@/views/Login.vue'
 // import HomePage from '@/views/HomePage.vue'
 // import Recommand from '@/components/recommand/index.vue'
 // import Detail from '@/views/Detail.vue'
@@ -132,6 +133,11 @@ const router = createRouter({
     {
       path: '/musiclists',
       component: MusicsList,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ],
 })
